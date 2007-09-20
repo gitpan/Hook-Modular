@@ -6,6 +6,10 @@ use File::Path;
 use File::Spec;
 use UNIVERSAL::require;
 
+
+our $VERSION = '0.02';
+
+
 sub new {
     my ($class, $conf, $name) = @_;
 

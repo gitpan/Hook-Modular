@@ -4,6 +4,9 @@ use warnings;
 use strict;
 
 
+our $VERSION = '0.02';
+
+
 sub new {
     my ($class, $plugin, $cache) = @_;
     bless {

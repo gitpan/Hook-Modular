@@ -23,4 +23,5 @@ requires:
   MIME::Base64: 0
   Module::Pluggable::Fast: 0
   Scalar::Util: 0
-version: 0.01
+  perl: 5.8.0
+version: 0.02

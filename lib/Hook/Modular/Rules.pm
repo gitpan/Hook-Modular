@@ -5,6 +5,9 @@ use strict;
 use Hook::Modular::Operator;
 
 
+our $VERSION = '0.02';
+
+
 sub new {
     my ($class, $op, @rules) = @_;
     Hook::Modular::Operator->is_valid_op(uc($op))

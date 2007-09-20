@@ -14,12 +14,14 @@ use UNIVERSAL::require;
 use base qw( Class::Accessor::Fast );
 __PACKAGE__->mk_accessors( qw(conf plugins_path cache) );
 
-our $VERSION = '0.01';
+
+our $VERSION = '0.02';
 
 
 use constant CACHE_CLASS => 'Hook::Modular::Cache';
 use constant CACHE_PROXY_CLASS => 'Hook::Modular::CacheProxy';
 use constant PLUGIN_NAMESPACE => 'Hook::Modular::Plugin';
+use constant SHOULD_REWRITE_CONFIG => 0;
 
 
 # Need an array, because rules live in Hook::Module::Rule::* as well as rule
@@ -60,6 +62,12 @@ sub new {
     $self->{conf}{log} ||= { level => 'debug' };
     $self->{conf}{plugin_namespace} ||= $self->PLUGIN_NAMESPACE;
 
+    # don't use ||= here, as we are dealing with boolean values, so "0" is a
+    # possible value.
+    unless (defined $self->{conf}{should_rewrite_config}) {
+        $self->{conf}{should_rewrite_config} = $self->SHOULD_REWRITE_CONFIG;
+    }
+
     if (my $ns = $self->{conf}{rule_namespace}) {
         $ns = [ $ns ] unless ref $ns eq 'ARRAY';
         $self->add_to_rule_namespaces(@$ns);
@@ -74,7 +82,8 @@ sub new {
     $loader->load_recipes($config);
     $self->load_cache($opt{config});
     $self->load_plugins(@{ $config->{plugins} || [] });
-    $self->rewrite_config if @{ $self->{rewrite_tasks} };
+    $self->rewrite_config if
+        $self->{conf}{should_rewrite_config} && @{ $self->{rewrite_tasks} };
 
     # for subclasses
     $self->init;
@@ -427,6 +436,22 @@ Hook::Modular - making pluggable applications easy
         indent_char: '*'
         text: 'this is some printer'
 
+
+  # here is the plugin:
+
+  package My::Test::Plugin::Some::Printer;
+  use warnings;
+  use strict;
+  use base 'Hook::Modular::Plugin';
+  
+  sub register {
+      my ($self, $context) = @_;
+      $context->register_hook($self, 'output.print' => $self->can('do_print'));
+  }
+  
+  sub do_print { ... }
+
+
   # some_app.pl
 
   use base 'Hook::Modular';
@@ -453,6 +478,32 @@ plugin the chance to register callbacks for any or all hooks the program
 offers. The program then runs the hooks in the order it desires. Each time a
 hook is run, all the callbacks the plugins have registered with this
 particular hook are run in order.
+
+Hook::Modular does more than just load and call plugins, however. It also
+supports the following concepts:
+
+=over 4
+
+=item Cache
+
+Plugins can cache their settings. Cached items can also expire after a given time.
+
+=item Crypt
+
+Hook::Lexwrap can go over your config file and encrypt any passwords it finds
+(as determined by the key C<password>). It will then rewrite the config file
+and make a backup of the original file. Encrypting and rewriting is turned off
+by default, but subclasses can enable it, or you can enable it from a config
+file itself.
+
+At the moment, encrypting is rather basic: The passwords are only turned into
+base64.
+
+=item Rules
+
+Hook::Modular supports rule-based dispatch of plugins.
+
+=back
 
 =head1 METHODS
 
@@ -513,6 +564,11 @@ with the name C<Some::Printer>, we will try to load
 C<My:::Test::Plugin::Some::Printer>.
 
 =back
+
+=head1 TAGS
+
+If you talk about this module in blogs, on del.icio.us or anywhere else,
+please use the C<hookmodular> tag.
 
 =head1 BUGS AND LIMITATIONS
 

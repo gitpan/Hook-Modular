@@ -5,12 +5,15 @@ use strict;
 use File::Find::Rule ();  # don't import rule()
 use File::Spec;
 use File::Basename;
+use Hook::Modular;
 use Hook::Modular::Crypt;
 use Hook::Modular::Rule;
 use Hook::Modular::Rules;
 use Scalar::Util qw(blessed);
 
-our $VERSION = '0.01';
+
+our $VERSION = '0.02';
+
 
 use base qw( Class::Accessor::Fast );
 __PACKAGE__->mk_accessors( qw(rule_hook cache) );
@@ -41,7 +44,8 @@ sub init {
         $self->{rule} = Hook::Modular::Rule->new({ module => 'Always' });
     }
 
-    $self->walk_config_encryption;
+    $self->walk_config_encryption if
+        Hook::Modular->context->{conf}{should_rewrite_config};
 }
 
 

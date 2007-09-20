@@ -5,6 +5,9 @@ use strict;
 use UNIVERSAL::require;
 
 
+our $VERSION = '0.02';
+
+
 sub new {
     my ($class, $config) = @_;
 

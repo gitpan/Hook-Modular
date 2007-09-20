@@ -1,5 +1,5 @@
 # auto-generated shipit config file.
-steps = FindVersion, ChangeVersion, CheckChangeLog, DistTest, Commit, Tag, MakeDist
+steps = FindVersion, ChangeVersion, CheckChangeLog, DistTest, Commit, Tag, MakeDist, UploadCPAN
 
 # svn.tagpattern = svn+ssh://makabaer/home/samba/gr/svnrepos/cpan/tags/Hook-Modular-%v
 svk.tagpattern = //local/cpan/tags/Hook-Modular-%v

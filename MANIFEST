@@ -23,6 +23,7 @@ lib/Hook/Modular/Rule.pm
 lib/Hook/Modular/Rule/Always.pm
 lib/Hook/Modular/Rule/Expression.pm
 lib/Hook/Modular/Rules.pm
+lib/Hook/Modular/Test.pm
 lib/Hook/Modular/Walker.pm
 Makefile.PL
 MANIFEST			This list of files
@@ -32,6 +33,8 @@ t/00_compile.t
 t/00_critic.t
 t/00_pod.t
 t/01config.t
-t/01config.yaml
+t/02password-no_rewrite.t
+t/03password-rewrite.t
 t/lib/My/Test/Plugin/Some/Printer.pm
 t/perlcriticrc
+TODO

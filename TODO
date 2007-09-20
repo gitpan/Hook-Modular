@@ -1,0 +1,6 @@
+- turn off caching by default; have a switch for subclasses (or config?) to
+  turn it on -> but what about plugins that use the cache? should it be turned
+  on automatically later in the program? Hm.
+- more tests
+- more docs
+- have Test::Pod::Coverage test

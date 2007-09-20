@@ -4,12 +4,18 @@ use warnings;
 use strict;
 use MIME::Base64 ();
 
+
+our $VERSION = '0.02';
+
+
 use constant id => 'base64';
+
 
 sub decrypt {
     my ($self, $text) = @_;
     MIME::Base64::decode($text);
 }
+
 
 sub encrypt {
     my ($self, $text) = @_;

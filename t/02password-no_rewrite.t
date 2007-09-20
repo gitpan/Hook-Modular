@@ -4,7 +4,8 @@ use warnings;
 use FindBin '$Bin';
 use lib File::Spec->catdir($Bin, 'lib');
 use Hook::Modular::Test ':all';
-use Test::More tests => 1;
+use YAML 'LoadFile';
+use Test::More tests => 2;
 
 use base 'Hook::Modular';
 
@@ -13,18 +14,20 @@ use base 'Hook::Modular';
 # having to specify it in every config file.
 
 use constant PLUGIN_NAMESPACE => 'My::Test::Plugin';
+use constant SHOULD_REWRITE_CONFIG => 0;  # just to be sure
 
+my $config_filename = write_config_file(do { local $/; <DATA> });
 
 sub run {
     my $self = shift;
     $self->SUPER::run(@_);
-    my %result;
-    $self->run_hook('output.print', { result => \%result });
-    is($result{text}, "****this is some printer\n",
-        'Some::Printer output.print');
+
+    is($self->{config_path}, $config_filename, 'config_path');
+    my $config = LoadFile($config_filename);
+    is($config->{plugins}[0]{config}{password}, 'flurble',
+        'password not rewritten');
 }
 
-my $config_filename = write_config_file(do { local $/; <DATA> });
 main->bootstrap(config => $config_filename);
 
 
@@ -39,6 +42,7 @@ global:
 plugins:
   - module: Some::Printer
     config:
+      password: flurble
       indent: 4
       indent_char: '*'
       text: 'this is some printer'

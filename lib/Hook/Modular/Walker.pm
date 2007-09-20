@@ -7,6 +7,9 @@ use Scalar::Util qw(blessed);
 use UNIVERSAL;
 
 
+our $VERSION = '0.02';
+
+
 sub new {
     my $class = shift;
     my $self  = @_ ? {@_} : {};

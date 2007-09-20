@@ -2,8 +2,11 @@ package Hook::Modular::Operator;
 
 use warnings;
 use strict;
-
 use List::Util qw(reduce);
+
+
+our $VERSION = '0.02';
+
 
 our %Ops = (
     AND  => [ sub { $_[0] && $_[1] } ],
@@ -14,10 +17,12 @@ our %Ops = (
     NOR  => [ sub { $_[0] || $_[1] }, 1 ],
 );
 
+
 sub is_valid_op {
     my ($class, $op) = @_;
     exists $Ops{$op};
 }
+
 
 sub call {
     my ($class, $op, @bool) = @_;

@@ -1,6 +1,11 @@
 package Hook::Modular::Rule::Expression;
+
+use warnings;
 use strict;
 use base 'Hook::Modular::Rule';
+
+
+our $VERSION = '0.02';
 
 
 sub dispatch {
