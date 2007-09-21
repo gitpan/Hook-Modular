@@ -2,5 +2,27 @@
   turn it on -> but what about plugins that use the cache? should it be turned
   on automatically later in the program? Hm.
 - more tests
+  - pass options as scalar ref and as hash
+    - should work
+    - should not rewrite passwords
+  - two or more plugins
+    - two plugins registering with the same hook get executed in the order
+      specified in the config
+    - have two plugins registering for different hooks; plugin A does hook X,
+      plugin B does hook Y. A is defined before B, but Y runs before X. That
+      is, test that the order in which you list plugins in the config does not
+      impact the order in which the hooks are run.
+  - rules
+    - have a My::Test::Rule::Never that has "sub dispatch { 0 }".
+      - one plugin that uses the rule; should not run
+      - two plugins: one uses the rule, the other doesn't
+      - two plugins: one uses "Always", one "Never". This tests that rules can
+        be found in different namespaces: Hook::Modular::Rule::Always and
+        My::Test::Rule::Never.
+    - have a My::Test::Rule::Maybe that takes a config key "dispatch" whose
+      value should be 1 or 0. Test that rules can take config as well.
+    - test combinations of rules: "Always OR Never" == 1; "Always AND Never" ==
+      0
 - more docs
 - have Test::Pod::Coverage test
+

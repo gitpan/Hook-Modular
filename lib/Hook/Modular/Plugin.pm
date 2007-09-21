@@ -12,7 +12,7 @@ use Hook::Modular::Rules;
 use Scalar::Util qw(blessed);
 
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 
 use base qw( Class::Accessor::Fast );

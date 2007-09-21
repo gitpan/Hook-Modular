@@ -5,7 +5,7 @@ use strict;
 use UNIVERSAL::require;
 
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 
 sub new {

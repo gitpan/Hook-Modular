@@ -23,5 +23,7 @@ requires:
   MIME::Base64: 0
   Module::Pluggable::Fast: 0
   Scalar::Util: 0
+  UNIVERSAL::require: 0
+  YAML: 0
   perl: 5.8.0
-version: 0.02
+version: 0.03

@@ -11,6 +11,8 @@ requires 'Module::Pluggable::Fast';
 requires 'MIME::Base64';
 requires 'List::Util';
 requires 'Scalar::Util';
+requires 'UNIVERSAL::require';
+requires 'YAML';
 
 build_requires('Test::More');
 

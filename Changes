@@ -1,7 +1,16 @@
 Revision history for Perl extension Hook::Modular
 
+0.03  Fr Sep 21 23:10:28 CEST 2007
+        - updated requirements in Makefile.PL
+        - more ideas in TODO
+        - t/00_critic.t now checks for the desired version of Perl::Critic
+        - updated all modules' $VERSION to 0.03
+
 0.02  Do Sep 20 14:28:17 CEST 2007
-        - original version
+        - requires perl 5.8
+        - more tests
+        - more documentation
+        - rewriting the config file is now optional, turned off by default
 
 0.01  Do Sep 20 00:05:55 CEST 2007
         - original version
