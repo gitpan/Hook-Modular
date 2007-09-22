@@ -24,5 +24,3 @@
     - test combinations of rules: "Always OR Never" == 1; "Always AND Never" ==
       0
 - more docs
-- have Test::Pod::Coverage test
-

@@ -17,6 +17,7 @@ no_index:
 requires: 
   Cache::FileCache: 0
   Class::Accessor::Fast: 0
+  Encode: 0
   File::Find::Rule: 0
   File::HomeDir: 0
   List::Util: 0
@@ -25,5 +26,4 @@ requires:
   Scalar::Util: 0
   UNIVERSAL::require: 0
   YAML: 0
-  perl: 5.8.0
-version: 0.03
+version: 0.04

@@ -15,7 +15,7 @@ use base qw( Class::Accessor::Fast );
 __PACKAGE__->mk_accessors( qw(conf plugins_path cache) );
 
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 
 use constant CACHE_CLASS => 'Hook::Modular::Cache';
@@ -74,7 +74,7 @@ sub new {
     }
 
     if (eval { require Term::Encoding }) {
-        $self->{conf}{log}->{encoding} ||= Term::Encoding::get_encoding();
+        $self->{conf}{log}{encoding} ||= Term::Encoding::get_encoding();
     }
 
     Hook::Modular->set_context($self);
@@ -446,7 +446,8 @@ Hook::Modular - making pluggable applications easy
   
   sub register {
       my ($self, $context) = @_;
-      $context->register_hook($self, 'output.print' => $self->can('do_print'));
+      $context->register_hook($self,
+        'output.print' => $self->can('do_print'));
   }
   
   sub do_print { ... }
@@ -486,7 +487,8 @@ supports the following concepts:
 
 =item Cache
 
-Plugins can cache their settings. Cached items can also expire after a given time.
+Plugins can cache their settings. Cached items can also expire after a given
+time.
 
 =item Crypt
 
@@ -509,7 +511,9 @@ Hook::Modular supports rule-based dispatch of plugins.
 
 =over 4
 
-=item new(%opt)
+=item new
+
+  my $obj = Hook::Modular->new(config => $config_file_name);
 
 Creates a new object and initializes it. The arguments are passed as a named
 hash. Valid argument keys:
@@ -532,29 +536,86 @@ reference.
 
 =back
 
-For example:
+The constructor also sets the application-wide configuration, which can be
+accessed using C<conf()>, to the C<global> part of the configuration data that
+has been passed to the constructor. This configuration is then augmented in
+various ways:
 
-  Hook::Modular->new(config => 'some_config.yaml');
+=over 4
 
+=item log level
 
-=item context(), set_context($context)
+  my $level = $self->conf->{log}{level}
+
+The log level is set to C<debug>, if it hasn't been set by the configuration
+data already.
+
+In the config file, you can specify it this way:
+
+  global:
+    log:
+      level: info
+
+=item log encoding
+
+  my $encoding = $self->conf->{log}{encoding}
+
+The log encoding is set to the current terminal's encoding, if it hasn't been
+set by the configuration data already.
+
+In the config file, you can specify it this way:
+
+  global:
+    log:
+      level: info
+
+=item plugin_namespace
+
+  my $ns = $self->conf->{plugin_namespace};
+
+The default plugin namespace is set to whatever the class defines as the
+C<PLUGIN_NAMESPACE> constant, if the configuration data hasn't set it already.
+See the documentation of C<PLUGIN_NAMESPACE> for details.
+
+=item should_rewrite_config
+
+  my $should_rewrite_config = $self->conf->{should_rewrite_config};
+
+If the configuration data hasn't set it already to either 0 or 1, config file
+rewriting is turned off. See the documentation of C<SHOULD_REWRITE_CONFIG> for
+details.
+
+=item rule_namespace
+
+If the config file specifies any rule namespaces, they are added to the
+default rule namespaces. See the documentation of C<add_to_rule_namespaces()>
+for details.
+
+=back
+
+=item context, set_context
+
+  my $context = $self->context;
+  $self->set_context($context);
 
 Gets and sets (respectively) the global context. It is singular; each program
 has only one context. Thie can be used to communicate between the plugins.
 
-=item conf([$conf])
+=item conf
 
-TO BE WRITTEN
+  my %conf = $self->conf;
+  my $plugin_path = $self->conf->{plugin_path} || [];
+  $self->conf->{log}{level} = 'debug';
 
-=item plugins_path([$path])
-
-TO BE WRITTEN
-
-=item cache([$cache])
-
-TO BE WRITTEN
+Returns a hash that has the application-wide configuration. It is set during
+C<new()> from the C<global> section of the configuration data and augmented
+with various other settings.
 
 =item PLUGIN_NAMESPACE
+
+  package My::TestApp;
+  use base 'Hook::Modular';
+  use constant PLUGIN_NAMESPACE => 'My::Test::Plugin';
 
 A constant that specifies the namespace that is prepended to plugin names
 found in the configuration. Defaults to C<Hook::Modular::Plugin>. Subclasses
@@ -562,6 +623,62 @@ can and probably should override this value. For example, if the plugin
 namespace is set to C<My::Test::Plugin> and the config file specifies a plugin
 with the name C<Some::Printer>, we will try to load
 C<My:::Test::Plugin::Some::Printer>.
+
+In the config file, you can specify it this way:
+
+  global:
+    plugin_namespace: My::Test::Plugin
+
+=item SHOULD_REWRITE_CONFIG
+
+  package My::TestApp;
+  use base 'Hook::Modular';
+  use constant SHOULD_REWRITE_CONFIG => 1;
+
+Hook::Modular can rewrite your config file, for example, to turn passwords
+into encrypted forms so they are not easily readable in the plain text. This
+behaviour is turned off by default, but the config file, or a subclass of
+Hook::Modular, can turn it on. In a config file, specify it this way:
+
+In the config file, you can specify it this way:
+
+  global:
+    should_rewrite_config: 1
+
+=item add_to_rule_namespace
+
+  $self->add_to_rule_namespaces(
+    qw/Some::Rule::Namespace Other::Rule::Namespace/);
+
+Hook::Modular supports multiple rule namespace, that is, package prefixes that
+are used when looking for rule classes. The reason to allow multiple rule
+namespace is that Hook::Modular has some rules, and your subclass might well
+define its own rules, so Hook::Modular needs to know which package it might
+find rules in.
+
+There is only one list of rule namespace per program. To add to rule
+namespaces in your program, don't access C<conf()> directly, but use the
+proper class methods to do so: C<add_to_rule_namespaces()> and
+C<rule_namespace()>.
+
+You can add to rule namespaces using the config file like this:
+
+  global:
+    rule_namespace:
+      - Some::Thing::Rule
+      - Other::Thing::Rule
+
+or, if you only want to add one rule namespace:
+
+  global:
+    rule_namespace: Some::Thing::Rule
+
+=item rule_namespaces
+
+  my @ns = $self->rule_namespaces;
+
+Returns the list of rule namespaces. See the documentation of
+C<add_to_rule_namespaces> for details.
 
 =back
 

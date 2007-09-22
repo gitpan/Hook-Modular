@@ -32,6 +32,7 @@ README
 t/00_compile.t
 t/00_critic.t
 t/00_pod.t
+t/00_pod_coverage.t
 t/01config.t
 t/02password-no_rewrite.t
 t/03password-rewrite.t

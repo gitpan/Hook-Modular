@@ -8,7 +8,7 @@ use YAML qw/Load DumpFile/;
 use base 'Exporter';
 
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 
 our %EXPORT_TAGS = (
@@ -62,7 +62,9 @@ get all of them if you use the C<:all> tag.
 
 =over 4
 
-=item write_config_file($yaml)
+=item write_config_file
+
+  my $temp_file_name = write_config_file($yaml_string);
 
 Takes the yaml, loads it (partly to make sure it is valid), dumps it out to a
 temporary file and returns the file name.

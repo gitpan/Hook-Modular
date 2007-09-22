@@ -1,5 +1,15 @@
 Revision history for Perl extension Hook::Modular
 
+0.04  Sa Sep 22 12:13:26 CEST 2007
+        - next attempt at fixing annoying CPAN testers' pseudo-bug reports:
+          they still ran tests with 5.6.2 even though I specified that 5.8 is
+          needed, and there were some strange Perl::Critic failures with
+          messages that aren't even in Perl::Critic
+        - more documentation
+        - added t/00_pod_coverage.t, but it skips all for now
+        - updated all modules' $VERSION to 0.03
+        - only run t/00_critic.t if $ENV{TEST_AUTHOR} is set
+
 0.03  Fr Sep 21 23:10:28 CEST 2007
         - updated requirements in Makefile.PL
         - more ideas in TODO
