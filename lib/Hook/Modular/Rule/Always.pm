@@ -2,10 +2,10 @@ package Hook::Modular::Rule::Always;
 
 use warnings;
 use strict;
-use base qw( Hook::Modular::Rule );
+use base 'Hook::Modular::Rule';
 
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 
 sub dispatch { 1 }

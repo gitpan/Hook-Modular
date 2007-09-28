@@ -1,5 +1,14 @@
 Revision history for Perl extension Hook::Modular
 
+0.05  Fr Sep 28 13:46:18 CEST 2007
+        - updated all modules' $VERSION to 0.05
+        - now uses Module::Install::StandardTests (without 'pod_coverage')
+        - added MANIFEST.SKIP
+        - added tests
+        - added documentation for Hook::Modular::Plugin
+        - fixed a bug in how Hook::Modular::Rules finds rules modules
+        - fixed some typos with config hash key 'rule_namespaces'
+
 0.04  Sa Sep 22 12:13:26 CEST 2007
         - next attempt at fixing annoying CPAN testers' pseudo-bug reports:
           they still ran tests with 5.6.2 even though I specified that 5.8 is
@@ -7,7 +16,7 @@ Revision history for Perl extension Hook::Modular
           messages that aren't even in Perl::Critic
         - more documentation
         - added t/00_pod_coverage.t, but it skips all for now
-        - updated all modules' $VERSION to 0.03
+        - updated all modules' $VERSION to 0.04
         - only run t/00_critic.t if $ENV{TEST_AUTHOR} is set
 
 0.03  Fr Sep 21 23:10:28 CEST 2007

@@ -5,7 +5,7 @@ use strict;
 use base 'Hook::Modular::Rule';
 
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 
 sub dispatch {

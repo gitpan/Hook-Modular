@@ -5,7 +5,7 @@ use strict;
 use UNIVERSAL::require;
 
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 
 sub new {
@@ -23,8 +23,10 @@ sub new {
     for my $ns (Hook::Modular->rule_namespaces) {
         $module = $ns . '::' . $module_suffix;
         push @tried => $module;
-        next unless $module->require;
-        $found++;
+        if ($module->require) {
+            $found++;
+            last;
+        }
     }
     $found or die sprintf "can't find any of %s", join(', ' => @tried);
 

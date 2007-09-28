@@ -15,7 +15,7 @@ use base qw( Class::Accessor::Fast );
 __PACKAGE__->mk_accessors( qw(conf plugins_path cache) );
 
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 
 use constant CACHE_CLASS => 'Hook::Modular::Cache';
@@ -68,7 +68,7 @@ sub new {
         $self->{conf}{should_rewrite_config} = $self->SHOULD_REWRITE_CONFIG;
     }
 
-    if (my $ns = $self->{conf}{rule_namespace}) {
+    if (my $ns = $self->{conf}{rule_namespaces}) {
         $ns = [ $ns ] unless ref $ns eq 'ARRAY';
         $self->add_to_rule_namespaces(@$ns);
     }
@@ -116,6 +116,7 @@ sub rewrite_config {
         $self->log(warn =>
             "config is not loaded from file. Ignoring rewrite tasks."
         );
+        $self->{trace}{ignored_rewrite_config}++;  # for tests
         return;
     }
 
@@ -585,7 +586,7 @@ If the configuration data hasn't set it already to either 0 or 1, config file
 rewriting is turned off. See the documentation of C<SHOULD_REWRITE_CONFIG> for
 details.
 
-=item rule_namespace
+=item rule_namespaces
 
 If the config file specifies any rule namespaces, they are added to the
 default rule namespaces. See the documentation of C<add_to_rule_namespaces()>
@@ -659,19 +660,19 @@ find rules in.
 There is only one list of rule namespace per program. To add to rule
 namespaces in your program, don't access C<conf()> directly, but use the
 proper class methods to do so: C<add_to_rule_namespaces()> and
-C<rule_namespace()>.
+C<rule_namespaces()>.
 
 You can add to rule namespaces using the config file like this:
 
   global:
-    rule_namespace:
+    rule_namespaces:
       - Some::Thing::Rule
       - Other::Thing::Rule
 
 or, if you only want to add one rule namespace:
 
   global:
-    rule_namespace: Some::Thing::Rule
+    rule_namespaces: Some::Thing::Rule
 
 =item rule_namespaces
 

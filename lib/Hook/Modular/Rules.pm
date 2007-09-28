@@ -5,7 +5,7 @@ use strict;
 use Hook::Modular::Operator;
 
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 
 sub new {

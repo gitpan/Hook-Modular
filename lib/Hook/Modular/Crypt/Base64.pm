@@ -5,7 +5,7 @@ use strict;
 use MIME::Base64 ();
 
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 
 use constant id => 'base64';
