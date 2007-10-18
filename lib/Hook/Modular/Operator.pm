@@ -5,7 +5,7 @@ use strict;
 use List::Util qw(reduce);
 
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 
 our %Ops = (

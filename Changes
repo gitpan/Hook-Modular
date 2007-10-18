@@ -1,5 +1,8 @@
 Revision history for Perl extension Hook::Modular
 
+0.06  Do Okt 18 10:09:39 CEST 2007
+        - fixed version requirement of Test::More
+
 0.05  Fr Sep 28 13:46:18 CEST 2007
         - updated all modules' $VERSION to 0.05
         - now uses Module::Install::StandardTests (without 'pod_coverage')

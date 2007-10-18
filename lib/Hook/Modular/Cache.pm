@@ -7,7 +7,7 @@ use File::Spec;
 use UNIVERSAL::require;
 
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 
 sub new {
