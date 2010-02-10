@@ -1,5 +1,5 @@
 package Hook::Modular;
-
+use 5.006;
 use warnings;
 use strict;
 use Encode ();
@@ -7,56 +7,45 @@ use Data::Dumper;
 use File::Copy;
 use File::Spec;
 use File::Basename;
-use File::Find::Rule (); # don't import rule()!
+use File::Find::Rule ();    # don't import rule()!
 use Hook::Modular::ConfigLoader;
 use UNIVERSAL::require;
-
 use base qw( Class::Accessor::Fast );
-__PACKAGE__->mk_accessors( qw(conf plugins_path cache) );
-
-
-our $VERSION = '0.06';
-
-
-use constant CACHE_CLASS => 'Hook::Modular::Cache';
-use constant CACHE_PROXY_CLASS => 'Hook::Modular::CacheProxy';
-use constant PLUGIN_NAMESPACE => 'Hook::Modular::Plugin';
+__PACKAGE__->mk_accessors(qw(conf plugins_path cache));
+our $VERSION = '0.08';
+use constant CACHE_CLASS           => 'Hook::Modular::Cache';
+use constant CACHE_PROXY_CLASS     => 'Hook::Modular::CacheProxy';
+use constant PLUGIN_NAMESPACE      => 'Hook::Modular::Plugin';
 use constant SHOULD_REWRITE_CONFIG => 0;
-
 
 # Need an array, because rules live in Hook::Module::Rule::* as well as rule
 # namespace of your subclassed program. We don't need such an array for
 # PLUGIN_NAMESPACE because we don't have any plugins under
 # 'Hook::Modular::Plugin::*'.
-
 my @rule_namespaces = ('Hook::Modular::Rule');
+
 sub add_to_rule_namespaces {
     my ($self, @ns) = @_;
     push @rule_namespaces => @ns;
 }
+
 sub rule_namespaces {
     wantarray ? @rule_namespaces : \@rule_namespaces;
 }
-
-
 my $context;
-sub context     { $context }
+sub context { $context }
 sub set_context { $context = $_[1] }
-
 
 sub new {
     my ($class, %opt) = @_;
-
     my $self = bless {
         conf          => {},
         plugins_path  => {},
         plugins       => [],
         rewrite_tasks => [],
     }, $class;
-
     my $loader = Hook::Modular::ConfigLoader->new;
     my $config = $loader->load($opt{config}, $self);
-
     $loader->load_include($config);
     $self->{conf} = $config->{global};
     $self->{conf}{log} ||= { level => 'debug' };
@@ -67,122 +56,100 @@ sub new {
     unless (defined $self->{conf}{should_rewrite_config}) {
         $self->{conf}{should_rewrite_config} = $self->SHOULD_REWRITE_CONFIG;
     }
-
     if (my $ns = $self->{conf}{rule_namespaces}) {
-        $ns = [ $ns ] unless ref $ns eq 'ARRAY';
+        $ns = [$ns] unless ref $ns eq 'ARRAY';
         $self->add_to_rule_namespaces(@$ns);
     }
-
     if (eval { require Term::Encoding }) {
         $self->{conf}{log}{encoding} ||= Term::Encoding::get_encoding();
     }
-
     Hook::Modular->set_context($self);
-
     $loader->load_recipes($config);
     $self->load_cache($opt{config});
     $self->load_plugins(@{ $config->{plugins} || [] });
-    $self->rewrite_config if
-        $self->{conf}{should_rewrite_config} && @{ $self->{rewrite_tasks} };
+    $self->rewrite_config
+      if $self->{conf}{should_rewrite_config} && @{ $self->{rewrite_tasks} };
 
     # for subclasses
     $self->init;
-
     $self;
 }
-
-
-sub init {}
-
+sub init { }
 
 sub bootstrap {
     my $class = shift;
-    my $self = $class->new(@_);
+    my $self  = $class->new(@_);
     $self->run;
     $self;
 }
-
 
 sub add_rewrite_task {
     my ($self, @stuff) = @_;
     push @{ $self->{rewrite_tasks} }, \@stuff;
 }
 
-
 sub rewrite_config {
     my $self = shift;
-
     unless ($self->{config_path}) {
-        $self->log(warn =>
-            "config is not loaded from file. Ignoring rewrite tasks."
-        );
-        $self->{trace}{ignored_rewrite_config}++;  # for tests
+        $self->log(
+            warn => "config is not loaded from file. Ignoring rewrite tasks.");
+        $self->{trace}{ignored_rewrite_config}++;    # for tests
         return;
     }
-
-    open my $fh, '<', $self->{config_path} or
-        $self->error("$self->{config_path}: $!");
+    open my $fh, '<', $self->{config_path}
+      or $self->error("$self->{config_path}: $!");
     my $data = join '', <$fh>;
     close $fh;
-
     my $old = $data;
     my $count;
 
     # xxx this is a quick hack: It should be a YAML roundtrip maybe
     for my $task (@{ $self->{rewrite_tasks} }) {
-        my ($key, $old_value, $new_value ) = @$task;
+        my ($key, $old_value, $new_value) = @$task;
         if ($data =~ s/^(\s+$key:\s+)\Q$old_value\E[ \t]*$/$1$new_value/m) {
             $count++;
         } else {
-            $self->log(error =>
-                "$key: $old_value not found in $self->{config_path}"
-            );
+            $self->log(
+                error => "$key: $old_value not found in $self->{config_path}");
         }
     }
-
     if ($count) {
-        File::Copy::copy( $self->{config_path}, $self->{config_path} . '.bak' );
-        open my $fh, '>', $self->{config_path} or
-            return $self->log(error => "$self->{config_path}: $!");
+        File::Copy::copy($self->{config_path}, $self->{config_path} . '.bak');
+        open my $fh, '>', $self->{config_path}
+          or return $self->log(error => "$self->{config_path}: $!");
         print $fh $data;
         close $fh;
-
         $self->log(info =>
-            "Rewrote $count password(s) and saved to $self->{config_path}");
+              "Rewrote $count password(s) and saved to $self->{config_path}");
     }
 }
 
-
 sub load_cache {
-    my($self, $config) = @_;
+    my ($self, $config) = @_;
 
     # cache is auto-vivified but that's okay
     unless ($self->{conf}{cache}{base}) {
-        # use config filename as a base directory for cache
-        my $base = ( basename($config) =~ /^(.*?)\.yaml$/ )[0] || 'config';
-        my $dir  = $base eq 'config' ? ".$0" : ".$0-$base";
-        $self->{conf}{cache}{base} ||=
-            File::Spec->catfile($self->home_dir, $dir);
-    }
 
+        # use config filename as a base directory for cache
+        my $base = (basename($config) =~ /^(.*?)\.yaml$/)[0] || 'config';
+        my $dir = $base eq 'config' ? ".$0" : ".$0-$base";
+        $self->{conf}{cache}{base} ||=
+          File::Spec->catfile($self->home_dir, $dir);
+    }
     my $cache_class = $self->CACHE_CLASS;
     $cache_class->require or die $@;
     $self->cache($cache_class->new($self->{conf}{cache}));
 }
-
 
 sub home_dir {
     eval { require File::HomeDir };
     return $@ ? $ENV{HOME} : File::HomeDir->my_home;
 }
 
-
 sub load_plugins {
     my ($self, @plugins) = @_;
-
     my $plugin_path = $self->conf->{plugin_path} || [];
-       $plugin_path = [ $plugin_path ] unless ref $plugin_path;
-
+    $plugin_path = [$plugin_path] unless ref $plugin_path;
     for my $path (@$plugin_path) {
         opendir my $dir, $path or do {
             $self->log(warn => "$path: $!");
@@ -210,35 +177,28 @@ sub load_plugins {
             }
         }
     }
-
     for my $plugin (@plugins) {
         $self->load_plugin($plugin) unless $plugin->{disable};
     }
 }
 
-
 sub add_plugin_path {
     my ($self, $file) = @_;
-
     my $pkg = $self->extract_package($file)
-        or die "Can't find package from $file";
+      or die "Can't find package from $file";
     $self->plugins_path->{$pkg} = $file;
     $self->log(debug => "$file is added as a path to plugin $pkg");
 }
 
-
 sub extract_package {
     my ($self, $file) = @_;
-
     my $ns = $self->{conf}{plugin_namespace} . '::';
     open my $fh, '<', $file or die "$file: $!";
     while (<$fh>) {
         /^package ($ns.*?);/ and return $1;
     }
-
     return;
 }
-
 
 sub autoload_plugin {
     my ($self, $plugin) = @_;
@@ -247,35 +207,29 @@ sub autoload_plugin {
     }
 }
 
-
 sub is_loaded {
     my ($self, $stuff) = @_;
-
-    my $sub = ref $stuff && ref $stuff eq 'Regexp'
-        ? sub { $_[0] =~ $stuff }
-        : sub { $_[0] eq $stuff };
-
+    my $sub =
+      ref $stuff && ref $stuff eq 'Regexp'
+      ? sub { $_[0] =~ $stuff }
+      : sub { $_[0] eq $stuff };
     my $ns = $self->{conf}{plugin_namespace} . '::';
     for my $plugin (@{ $self->{plugins} }) {
         my $module = ref $plugin;
-           $module =~ s/^$ns//;
+        $module =~ s/^$ns//;
         return 1 if $sub->($module);
     }
-
     return;
 }
 
-
 sub load_plugin {
     my ($self, $config) = @_;
-
-    my $ns = $self->{conf}{plugin_namespace} . '::';
+    my $ns     = $self->{conf}{plugin_namespace} . '::';
     my $module = delete $config->{module};
     if ($module !~ s/^\+//) {
         $module =~ s/^$ns//;
         $module = $ns . $module;
     }
-
     if ($module->isa($self->{conf}{plugin_namespace})) {
         $self->log(debug => "$module is loaded elsewhere ... maybe .t script?");
     } elsif (my $path = $self->plugins_path->{$module}) {
@@ -283,42 +237,37 @@ sub load_plugin {
     } else {
         $module->require or die $@;
     }
-
     $self->log(info => "plugin $module loaded.");
-
-    my $plugin = $module->new($config);
+    my $plugin            = $module->new($config);
     my $cache_proxy_class = $self->CACHE_PROXY_CLASS;
     $cache_proxy_class->require or die $@;
-    $plugin->cache(
-        $cache_proxy_class->new($plugin, $self->cache)
-    );
+    $plugin->cache($cache_proxy_class->new($plugin, $self->cache));
     $plugin->register($self);
-
-    push @{$self->{plugins}}, $plugin;
+    push @{ $self->{plugins} }, $plugin;
 }
-
 
 sub register_hook {
     my ($self, $plugin, @hooks) = @_;
     while (my ($hook, $callback) = splice @hooks, 0, 2) {
+
         # set default rule_hook $hook to $plugin
         $plugin->rule_hook($hook) unless $plugin->rule_hook;
-
-        push @{ $self->{hooks}{$hook} }, +{
-            callback  => $callback,
-            plugin    => $plugin,
-        };
+        push @{ $self->{hooks}{$hook} },
+          +{callback => $callback,
+            plugin   => $plugin,
+          };
     }
 }
 
-
 sub run_hook {
     my ($self, $hook, $args, $once, $callback) = @_;
-
     my @ret;
+    $self->log(debug => "run_hook $hook");
     for my $action (@{ $self->{hooks}{$hook} }) {
         my $plugin = $action->{plugin};
-        if ( $plugin->rule->dispatch($plugin, $hook, $args) ) {
+        $self->log(debug => sprintf('--> plugin %s', ref $plugin));
+        if ($plugin->rule->dispatch($plugin, $hook, $args)) {
+            $self->log(debug => "----> running action");
             my $ret = $action->{callback}->($plugin, $self, $args);
             $callback->($ret) if $callback;
             if ($once) {
@@ -330,36 +279,27 @@ sub run_hook {
             push @ret, undef;
         }
     }
-
     return if $once;
     return @ret;
 }
-
 
 sub run_hook_once {
     my ($self, $hook, $args, $callback) = @_;
     $self->run_hook($hook, $args, 1, $callback);
 }
 
-
 sub run_main {
     my $self = shift;
-
     $self->run_hook('plugin.init');
     $self->run;
     $self->run_hook('plugin.finalize');
-
     Hook::Modular->set_context(undef);
     $self;
 }
-
-
-sub run {}
-
+sub run { }
 
 sub log {
     my ($self, $level, $msg, %opt) = @_;
-
     return unless $self->should_log($level);
 
     # hack to get the original caller as Plugin or Rule
@@ -372,7 +312,6 @@ sub log {
         }
         $caller ||= caller(0);
     }
-
     chomp($msg);
     if ($self->conf->{log}->{encoding}) {
         $msg = Encode::decode_utf8($msg) unless utf8::is_utf8($msg);
@@ -380,8 +319,6 @@ sub log {
     }
     warn "$caller [$level] $msg\n";
 }
-
-
 my %levels = (
     debug => 0,
     warn  => 1,
@@ -389,12 +326,10 @@ my %levels = (
     error => 3,
 );
 
-
 sub should_log {
     my ($self, $level) = @_;
-    $levels{$level} >= $levels{$self->conf->{log}->{level}};
+    $levels{$level} >= $levels{ $self->conf->{log}->{level} };
 }
-
 
 sub error {
     my ($self, $msg) = @_;
@@ -403,25 +338,25 @@ sub error {
     die "$caller [fatal] $msg at line $line\n";
 }
 
-
 sub dumper {
     my ($self, $stuff) = @_;
     local $Data::Dumper::Indent = 1;
     $self->log(debug => Dumper $stuff);
 }
-
-
 1;
+__END__
 
+=for test_synopsis
+1;
 __END__
 
 =head1 NAME
 
-Hook::Modular - making pluggable applications easy
+Hook::Modular - Making pluggable applications easy
 
 =head1 SYNOPSIS
 
-  # some_config.yaml
+In C<some_config.yaml>
 
   global:
     log:
@@ -437,8 +372,7 @@ Hook::Modular - making pluggable applications easy
         indent_char: '*'
         text: 'this is some printer'
 
-
-  # here is the plugin:
+here is the plugin:
 
   package My::Test::Plugin::Some::Printer;
   use warnings;
@@ -453,8 +387,7 @@ Hook::Modular - making pluggable applications easy
   
   sub do_print { ... }
 
-
-  # some_app.pl
+And this is C<some_app.pl>
 
   use base 'Hook::Modular';
 
@@ -512,7 +445,7 @@ Hook::Modular supports rule-based dispatch of plugins.
 
 =over 4
 
-=item new
+=item C<new>
 
   my $obj = Hook::Modular->new(config => $config_file_name);
 
@@ -521,7 +454,7 @@ hash. Valid argument keys:
 
 =over 4
 
-=item config
+=item C<config>
 
 Reads or sets the global configuration.
 
@@ -544,7 +477,7 @@ various ways:
 
 =over 4
 
-=item log level
+=item C<log level>
 
   my $level = $self->conf->{log}{level}
 
@@ -557,7 +490,7 @@ In the config file, you can specify it this way:
     log:
       level: info
 
-=item log encoding
+=item C<log encoding>
 
   my $encoding = $self->conf->{log}{encoding}
 
@@ -570,7 +503,7 @@ In the config file, you can specify it this way:
     log:
       level: info
 
-=item plugin_namespace
+=item C<plugin_namespace>
 
   my $ns = $self->conf->{plugin_namespace};
 
@@ -578,7 +511,7 @@ The default plugin namespace is set to whatever the class defines as the
 C<PLUGIN_NAMESPACE> constant, if the configuration data hasn't set it already.
 See the documentation of C<PLUGIN_NAMESPACE> for details.
 
-=item should_rewrite_config
+=item C<should_rewrite_config>
 
   my $should_rewrite_config = $self->conf->{should_rewrite_config};
 
@@ -586,7 +519,7 @@ If the configuration data hasn't set it already to either 0 or 1, config file
 rewriting is turned off. See the documentation of C<SHOULD_REWRITE_CONFIG> for
 details.
 
-=item rule_namespaces
+=item C<rule_namespaces>
 
 If the config file specifies any rule namespaces, they are added to the
 default rule namespaces. See the documentation of C<add_to_rule_namespaces()>
@@ -594,15 +527,15 @@ for details.
 
 =back
 
-=item context, set_context
+=item C<context, set_context>
 
   my $context = $self->context;
   $self->set_context($context);
 
 Gets and sets (respectively) the global context. It is singular; each program
-has only one context. Thie can be used to communicate between the plugins.
+has only one context. This can be used to communicate between the plugins.
 
-=item conf
+=item C<conf>
 
   my %conf = $self->conf;
   my $plugin_path = $self->conf->{plugin_path} || [];
@@ -646,7 +579,7 @@ In the config file, you can specify it this way:
   global:
     should_rewrite_config: 1
 
-=item add_to_rule_namespace
+=item C<add_to_rule_namespace>
 
   $self->add_to_rule_namespaces(
     qw/Some::Rule::Namespace Other::Rule::Namespace/);
@@ -674,7 +607,7 @@ or, if you only want to add one rule namespace:
   global:
     rule_namespaces: Some::Thing::Rule
 
-=item rule_namespaces
+=item C<rule_namespaces>
 
   my @ns = $self->rule_namespaces;
 
@@ -683,17 +616,11 @@ C<add_to_rule_namespaces> for details.
 
 =back
 
-=head1 TAGS
-
-If you talk about this module in blogs, on del.icio.us or anywhere else,
-please use the C<hookmodular> tag.
-
 =head1 BUGS AND LIMITATIONS
 
 No bugs have been reported.
 
-Please report any bugs or feature requests to
-C<bug-hook-modular@rt.cpan.org>, or through the web interface at
+Please report any bugs or feature requests through the web interface at
 L<http://rt.cpan.org>.
 
 =head1 INSTALLATION
@@ -704,21 +631,19 @@ See perlmodinstall for information and options on installing Perl modules.
 
 The latest version of this module is available from the Comprehensive Perl
 Archive Network (CPAN). Visit <http://www.perl.com/CPAN/> to find a CPAN
-site near you. Or see <http://www.perl.com/CPAN/authors/id/M/MA/MARCEL/>.
+site near you. Or see L<http://search.cpan.org/dist/Hook-Modular/>.
 
-=head1 AUTHOR
+=head1 AUTHORS
+
+Tatsuhiko Miyagawa C<< <miyagawa@bulknews.net> >>
 
 Marcel GrE<uuml>nauer, C<< <marcel@cpan.org> >>
 
-The code is almost completely lifted from L<Plagger>, so really Tatsuhiko
-Miyagawa C<< <miyagawa@bulknews.net> >> deserves all the credit.
-
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2007 by Marcel GrE<uuml>nauer
+Copyright 2007-2009 by the authors.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 
 =cut
-

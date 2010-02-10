@@ -5,18 +5,13 @@ use FindBin '$Bin';
 use lib File::Spec->catdir($Bin, 'lib');
 use Hook::Modular::Test ':all';
 use Test::More tests => 1;
-
 use base 'Hook::Modular';
 
 # Test that two plugins registering with the same hook get executed in the
 # order specified in the config.
-
-
 # specifying the appropriate plugin namespace for this program saves you from
 # having to specify it in every config file.
-
 use constant PLUGIN_NAMESPACE => 'My::Test::Plugin';
-
 
 sub run {
     my $self = shift;
@@ -30,11 +25,10 @@ My::Test::Plugin::Just::Greet says hello
 ****this is some printer
 EOTEXT
 }
-
-my $config_filename = write_config_file(do { local $/; <DATA> });
+my $config_filename = write_config_file(
+    do { local $/; <DATA> }
+);
 main->bootstrap(config => $config_filename);
-
-
 __DATA__
 global:
   log:

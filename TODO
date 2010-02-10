@@ -1,6 +1,0 @@
-- turn off caching by default; have a switch for subclasses (or config?) to
-  turn it on -> but what about plugins that use the cache? should it be turned
-  on automatically later in the program? Hm.
-- more tests
-  - test combinations of rules: "Always OR Never" == 1; "Always AND Never" == 0
-- more docs

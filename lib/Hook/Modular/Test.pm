@@ -1,35 +1,30 @@
 package Hook::Modular::Test;
-
 use warnings;
 use strict;
 use File::Temp 'tempfile';
 use YAML qw/Load DumpFile/;
-
-use base 'Exporter';
-
-
-our $VERSION = '0.06';
-
-
+use Exporter qw(import);
+our $VERSION     = '0.08';
 our %EXPORT_TAGS = (
-    util => [ qw/
-        write_config_file
-    / ],
+    util => [
+        qw/
+          write_config_file
+          /
+    ],
 );
-
 our @EXPORT_OK = @{ $EXPORT_TAGS{all} = [ map { @$_ } values %EXPORT_TAGS ] };
 
-
 sub write_config_file {
-    my $yaml = shift;
+    my $yaml     = shift;
     my $filename = (tempfile())[1];
     DumpFile($filename, Load($yaml));
     $filename;
 }
-
-
 1;
+__END__
 
+=for test_synopsis
+1;
 __END__
 
 =head1 NAME
@@ -44,7 +39,9 @@ Hook::Modular::Test - utility functions for testing Hook::Modular
 
   my $config_filename = write_config_file(do { local $/; <DATA> });
 
-  sub run { ... }
+  sub run {
+      # ...
+  }
 
   __DATA__
   global:
@@ -62,22 +59,41 @@ get all of them if you use the C<:all> tag.
 
 =over 4
 
-=item write_config_file
+=item C<write_config_file>
 
   my $temp_file_name = write_config_file($yaml_string);
 
-Takes the yaml, loads it (partly to make sure it is valid), dumps it out to a
+Takes the YAML, loads it (partly to make sure it is valid), dumps it out to a
 temporary file and returns the file name.
 
 =back
 
-=head1 AUTHOR
+=head1 BUGS AND LIMITATIONS
+
+No bugs have been reported.
+
+Please report any bugs or feature requests through the web interface at
+L<http://rt.cpan.org>.
+
+=head1 INSTALLATION
+
+See perlmodinstall for information and options on installing Perl modules.
+
+=head1 AVAILABILITY
+
+The latest version of this module is available from the Comprehensive Perl
+Archive Network (CPAN). Visit <http://www.perl.com/CPAN/> to find a CPAN
+site near you. Or see L<http://search.cpan.org/dist/Hook-Modular/>.
+
+=head1 AUTHORS
+
+Tatsuhiko Miyagawa C<< <miyagawa@bulknews.net> >>
 
 Marcel GrE<uuml>nauer, C<< <marcel@cpan.org> >>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2007 by Marcel GrE<uuml>nauer
+Copyright 2007-2009 by the authors.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

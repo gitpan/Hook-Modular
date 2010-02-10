@@ -1,8 +1,7 @@
 package Hook::Modular::Plugin;
-
 use warnings;
 use strict;
-use File::Find::Rule ();  # don't import rule()
+use File::Find::Rule ();    # don't import rule()
 use File::Spec;
 use File::Basename;
 use Hook::Modular;
@@ -10,21 +9,16 @@ use Hook::Modular::Crypt;
 use Hook::Modular::Rule;
 use Hook::Modular::Rules;
 use Scalar::Util qw(blessed);
-
-
-our $VERSION = '0.06';
-
-
+our $VERSION = '0.08';
 use base qw( Class::Accessor::Fast );
-__PACKAGE__->mk_accessors( qw(rule_hook cache) );
-
+__PACKAGE__->mk_accessors(qw(rule_hook cache));
 
 sub new {
     my ($class, $opt) = @_;
     my $self = bless {
-        conf      => $opt->{config} || {},
-        rule      => $opt->{rule},
-        rule_op   => $opt->{rule_op} || 'AND',
+        conf    => $opt->{config}  || {},
+        rule    => $opt->{rule},
+        rule_op => $opt->{rule_op} || 'AND',
         rule_hook => '',
         meta      => {},
     }, $class;
@@ -32,39 +26,30 @@ sub new {
     $self;
 }
 
-
 sub init {
     my $self = shift;
-
     if (my $rule = $self->{rule}) {
-        $rule = [ $rule ] if ref $rule eq 'HASH';
+        $rule = [$rule] if ref $rule eq 'HASH';
         my $op = $self->{rule_op};
         $self->{rule} = Hook::Modular::Rules->new($op, @$rule);
     } else {
         $self->{rule} = Hook::Modular::Rule->new({ module => 'Always' });
     }
-
-    $self->walk_config_encryption if
-        Hook::Modular->context->{conf}{should_rewrite_config};
+    $self->walk_config_encryption
+      if Hook::Modular->context->{conf}{should_rewrite_config};
 }
-
-
 sub conf { $_[0]->{conf} }
 sub rule { $_[0]->{rule} }
-
 
 sub walk_config_encryption {
     my $self = shift;
     my $conf = $self->conf;
-
     $self->do_walk($conf);
 }
-
 
 sub do_walk {
     my ($self, $data) = @_;
     return unless defined($data) && ref $data;
-
     if (ref $data eq 'HASH') {
         for my $key (keys %$data) {
             if ($key =~ /password/) {
@@ -77,38 +62,30 @@ sub do_walk {
     }
 }
 
-
 sub decrypt_config {
     my ($self, $data, $key) = @_;
-
     my $decrypted = Hook::Modular::Crypt->decrypt($data->{$key});
     if ($decrypted eq $data->{$key}) {
         Hook::Modular->context->add_rewrite_task($key, $decrypted,
-            Hook::Modular::Crypt->encrypt($decrypted, 'base64')
-        );
+            Hook::Modular::Crypt->encrypt($decrypted, 'base64'));
     } else {
         $data->{$key} = $decrypted;
     }
 }
-
 
 sub dispatch_rule_on {
     my ($self, $hook) = @_;
     $self->rule_hook && $self->rule_hook eq $hook;
 }
 
-
 sub class_id {
     my $self = shift;
-
-    my $ns = Hook::Modular->context->{conf}{plugin_namespace};
-    my $pkg = ref($self) || $self;
-       $pkg =~ s/$ns//;
+    my $ns   = Hook::Modular->context->{conf}{plugin_namespace};
+    my $pkg  = ref($self) || $self;
+    $pkg =~ s/$ns//;
     my @pkg = split /::/, $pkg;
-
     return join '-', @pkg;
 }
-
 
 # subclasses may overload to avoid cache sharing
 sub plugin_id {
@@ -116,43 +93,31 @@ sub plugin_id {
     $self->class_id;
 }
 
-
 sub assets_dir {
-    my $self = shift;
+    my $self    = shift;
     my $context = Hook::Modular->context;
-
     if ($self->conf->{assets_path}) {
-        return $self->conf->{assets_path}; # look at config:assets_path first
+        return $self->conf->{assets_path};    # look at config:assets_path first
     }
-
-    my $assets_base =
-        $context->conf->{assets_path} ||              # or global:assets_path
-        File::Spec->catfile($FindBin::Bin, "assets"); # or "assets" under current script
-
-    return File::Spec->catfile(
-        $assets_base, "plugins", $self->class_id,
-    );
+    my $assets_base = $context->conf->{assets_path} ||   # or global:assets_path
+      File::Spec->catfile($FindBin::Bin, "assets")
+      ;    # or "assets" under current script
+    return File::Spec->catfile($assets_base, "plugins", $self->class_id,);
 }
-
 
 sub log {
     my $self = shift;
     Hook::Modular->context->log(@_, caller => ref $self);
 }
 
-
 sub load_assets {
-    my($self, $rule, $callback) = @_;
-
+    my ($self, $rule, $callback) = @_;
     unless (blessed($rule) && $rule->isa('File::Find::Rule')) {
         $rule = File::Find::Rule->name($rule);
     }
 
     # ignore .svn directories
-     $rule->or(
-         $rule->new->directory->name('.svn')->prune->discard,
-         $rule->new,
-     );
+    $rule->or($rule->new->directory->name('.svn')->prune->discard, $rule->new,);
 
     # $rule isa File::Find::Rule
     for my $file ($rule->in($self->assets_dir)) {
@@ -160,10 +125,11 @@ sub load_assets {
         $callback->($file, $base);
     }
 }
-
-
 1;
+__END__
 
+=for test_synopsis
+1;
 __END__
 
 =head1 NAME
@@ -172,7 +138,7 @@ Hook::Modular::Plugin - base class for plugins
 
 =head1 SYNOPSIS
 
-  # some_config.yaml
+Here is C<some_config.yaml>:
 
   global:
     log:
@@ -188,8 +154,7 @@ Hook::Modular::Plugin - base class for plugins
         indent_char: '*'
         text: 'this is some printer'
 
-
-  # here is the plugin:
+here is the plugin:
 
   package My::Test::Plugin::Some::Printer;
   use warnings;
@@ -204,8 +169,7 @@ Hook::Modular::Plugin - base class for plugins
   
   sub do_print { ... }
 
-
-  # some_app.pl
+And this is C<some_app.pl>
 
   use base 'Hook::Modular';
 
@@ -237,7 +201,7 @@ the synopsis.
 
 =over 4
 
-=item new
+=item C<new>
 
 Creates a new object and initializes it. Normally you don't call this method
 yourself, however. Instead, L<Hook::Modular> calls it when loading the plugins
@@ -247,15 +211,15 @@ The arguments are passed as a named hash. Valid argument keys:
 
 =over 4
 
-=item conf
+=item C<conf>
 
 The plugin's own configuration, taken straight from the configuration. It has to be a hash of scalars, or hash of hashes or the like. See L</"PLUGIN CONFIGURATION"> for details.
 
-=item rule
+=item C<rule>
 
 Specifies the rule to be used for this plugin's dispatch. See L</"RULES">.
 
-=item rule_op
+=item C<rule_op>
 
 Specifies the rule operator to be used for this plugin's dispatch. See
 L</"RULES">.
@@ -269,14 +233,14 @@ as the only encryption supported isn't even an encryption, just base64
 encoding.
 
 This encryption and decryption is only happening if your main class, the one
-sublcassing Hook::Modular, says it should. See C<SHOULD_REWRITE_CONFIG> in
+subclassing Hook::Modular, says it should. See C<SHOULD_REWRITE_CONFIG> in
 L<Hook::Modular> for details.
 
-=item conf
+=item C<conf>
 
 Returns the plugin's configuration hash.
 
-=item rule
+=item C<rule>
 
 Returns the plugin's rule settings.
 
@@ -290,7 +254,7 @@ meanings:
 
 =over 4
 
-=item disable
+=item C<disable>
 
   plugins:
     - module: Some::Printer
@@ -302,7 +266,7 @@ If this key is set to a true value in the plugin's configuration, the plugin
 is not even loaded. This is useful for temporarily disabling plugins during
 debugging.
 
-=item assets_path
+=item C<assets_path>
 
   plugins:
     - module: Some::Printer
@@ -393,17 +357,11 @@ C<My::Test::Plugin> and your plugin package name is
 C<My::Test::Plugin::Some::Printer>, then the default assets directory would be
 C<$Bin/assets/plugins/Some-Printer>.
 
-=head1 TAGS
-
-If you talk about this module in blogs, on del.icio.us or anywhere else,
-please use the C<hookmodular> tag.
-
 =head1 BUGS AND LIMITATIONS
 
 No bugs have been reported.
 
-Please report any bugs or feature requests to
-C<bug-hook-modular@rt.cpan.org>, or through the web interface at
+Please report any bugs or feature requests through the web interface at
 L<http://rt.cpan.org>.
 
 =head1 INSTALLATION
@@ -414,18 +372,17 @@ See perlmodinstall for information and options on installing Perl modules.
 
 The latest version of this module is available from the Comprehensive Perl
 Archive Network (CPAN). Visit <http://www.perl.com/CPAN/> to find a CPAN
-site near you. Or see <http://www.perl.com/CPAN/authors/id/M/MA/MARCEL/>.
+site near you. Or see L<http://search.cpan.org/dist/Hook-Modular/>.
 
-=head1 AUTHOR
+=head1 AUTHORS
+
+Tatsuhiko Miyagawa C<< <miyagawa@bulknews.net> >>
 
 Marcel GrE<uuml>nauer, C<< <marcel@cpan.org> >>
 
-The code is almost completely lifted from L<Plagger>, so really Tatsuhiko
-Miyagawa C<< <miyagawa@bulknews.net> >> deserves all the credit.
-
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2007 by Marcel GrE<uuml>nauer
+Copyright 2007-2009 by the authors.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

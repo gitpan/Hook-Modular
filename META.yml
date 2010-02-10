@@ -1,22 +1,25 @@
---- 
-abstract: making pluggable applications easy
-author: Marcel GrE<uuml>nauer, C<< <marcel@cpan.org> >>
-build_requires: 
-  Test::Compile: 0
-  Test::More: 0
-  UNIVERSAL::require: 0
+---
+abstract: 'Making pluggable applications easy'
+author:
+  - 'Tatsuhiko Miyagawa C<< <miyagawa@bulknews.net> >>'
+build_requires:
+  ExtUtils::MakeMaker: 6.42
+  Test::More: 0.70
+configure_requires:
+  ExtUtils::MakeMaker: 6.42
 distribution_type: module
-generated_by: Module::Install version 0.67
+generated_by: 'Module::Install version 0.91'
 license: perl
-meta-spec: 
-  url: http://module-build.sourceforge.net/META-spec-v1.3.html
-  version: 1.3
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
 name: Hook-Modular
-no_index: 
-  directory: 
+no_index:
+  directory:
     - inc
     - t
-requires: 
+    - xt
+requires:
   Cache::FileCache: 0
   Class::Accessor::Fast: 0
   Encode: 0
@@ -29,4 +32,9 @@ requires:
   UNIVERSAL::require: 0
   YAML: 0
   perl: 5.6.0
-version: 0.06
+resources:
+  bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=Hook-Modular
+  homepage: http://search.cpan.org/dist/Hook-Modular/
+  license: http://dev.perl.org/licenses/
+  repository: git://github.com/hanekomu/hook-modular.git
+version: 0.08
