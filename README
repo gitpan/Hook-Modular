@@ -49,6 +49,9 @@ SYNOPSIS
 
       main->bootstrap(config => $config_filename);
 
+    But also see Hook::Modular::Builder for a domain-specific language to
+    build a configuration.
+
 DESCRIPTION
     Hook::Modular makes writing pluggable applications easy. Use a config
     file to specify which plugins you want and to pass options to those
@@ -99,6 +102,9 @@ METHODS
 
             If the value is a hash reference, the configuration is cloned
             from that hash reference.
+
+            Also see Hook::Modular::Builder for a domain-specific language
+            to build a configuration.
 
         The constructor also sets the application-wide configuration, which
         can be accessed using "conf()", to the "global" part of the

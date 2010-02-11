@@ -2,7 +2,7 @@ package Hook::Modular::Rule::Expression;
 use warnings;
 use strict;
 use base 'Hook::Modular::Rule';
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 sub dispatch {
     my ($self, $args) = @_;

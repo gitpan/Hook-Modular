@@ -12,7 +12,7 @@ use Hook::Modular::ConfigLoader;
 use UNIVERSAL::require;
 use base qw( Class::Accessor::Fast );
 __PACKAGE__->mk_accessors(qw(conf plugins_path cache));
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 use constant CACHE_CLASS           => 'Hook::Modular::Cache';
 use constant CACHE_PROXY_CLASS     => 'Hook::Modular::CacheProxy';
 use constant PLUGIN_NAMESPACE      => 'Hook::Modular::Plugin';
@@ -403,6 +403,9 @@ And this is C<some_app.pl>
 
   main->bootstrap(config => $config_filename);
 
+But also see L<Hook::Modular::Builder> for a domain-specific language to build
+a configuration.
+
 =head1 DESCRIPTION
 
 Hook::Modular makes writing pluggable applications easy. Use a config file to
@@ -467,6 +470,9 @@ YAML and is loaded.
 
 If the value is a hash reference, the configuration is cloned from that hash
 reference.
+
+Also see L<Hook::Modular::Builder> for a domain-specific language to build a
+configuration.
 
 =back
 

@@ -5,7 +5,7 @@ use Carp;
 use Hook::Modular::Walker;
 use YAML;
 use Storable;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 sub new {
     my $class = shift;

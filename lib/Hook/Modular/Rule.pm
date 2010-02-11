@@ -2,7 +2,7 @@ package Hook::Modular::Rule;
 use warnings;
 use strict;
 use UNIVERSAL::require;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 sub new {
     my ($class, $config) = @_;

@@ -21,6 +21,7 @@ inc/Pod/Markdown.pm
 inc/Test/More.pm
 INSTALL
 lib/Hook/Modular.pm
+lib/Hook/Modular/Builder.pm
 lib/Hook/Modular/Cache.pm
 lib/Hook/Modular/Cache/Null.pm
 lib/Hook/Modular/CacheProxy.pm
@@ -52,6 +53,7 @@ t/06_two_plugins.t
 t/07_rule-never.t
 t/08_two_plugins-diff_rules.t
 t/09_rule-maybe.t
+t/10_builder.t
 t/lib/My/Test/Plugin/Just/Greet.pm
 t/lib/My/Test/Plugin/Some/Printer.pm
 t/lib/My/Test/Rule/Maybe.pm

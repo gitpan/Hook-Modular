@@ -2,7 +2,7 @@ package Hook::Modular::Operator;
 use warnings;
 use strict;
 use List::Util qw(reduce);
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 our %Ops     = (
     AND => [ sub { $_[0] && $_[1] } ],
     OR => [ sub { $_[0] || $_[1] } ],

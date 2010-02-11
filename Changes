@@ -1,5 +1,8 @@
 Revision history for Perl extension Hook-Modular
 
+0.09  Thu 2010.02.11 16:17:27 CET (Marcel Gruenauer <marcel@cpan.org>)
+     - Added Hook::Modular::Builder.
+
 0.08  Wed 2010.02.10 11:33:09 CET (Marcel Gruenauer <marcel@cpan.org>)
      - Changed dist style and Changes back to standard. People didn't like it -
        the nail that sticks out gets hammered down.

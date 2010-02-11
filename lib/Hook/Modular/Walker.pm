@@ -4,7 +4,7 @@ use strict;
 use Carp;
 use Scalar::Util qw(blessed);
 use UNIVERSAL;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 sub new {
     my $class = shift;

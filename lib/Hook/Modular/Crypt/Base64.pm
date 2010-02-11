@@ -2,7 +2,7 @@ package Hook::Modular::Crypt::Base64;
 use warnings;
 use strict;
 use MIME::Base64 ();
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 use constant id => 'base64';
 
 sub decrypt {

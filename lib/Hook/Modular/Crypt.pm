@@ -1,7 +1,7 @@
 package Hook::Modular::Crypt;
 use warnings;
 use strict;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 use Module::Pluggable::Fast
   search  => [qw/Hook::Modular::Crypt/],
   require => 1;

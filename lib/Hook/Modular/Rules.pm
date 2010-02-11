@@ -2,7 +2,7 @@ package Hook::Modular::Rules;
 use warnings;
 use strict;
 use Hook::Modular::Operator;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 sub new {
     my ($class, $op, @rules) = @_;

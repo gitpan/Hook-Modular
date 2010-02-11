@@ -9,7 +9,7 @@ use Hook::Modular::Crypt;
 use Hook::Modular::Rule;
 use Hook::Modular::Rules;
 use Scalar::Util qw(blessed);
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 use base qw( Class::Accessor::Fast );
 __PACKAGE__->mk_accessors(qw(rule_hook cache));
 

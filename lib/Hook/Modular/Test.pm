@@ -4,7 +4,7 @@ use strict;
 use File::Temp 'tempfile';
 use YAML qw/Load DumpFile/;
 use Exporter qw(import);
-our $VERSION     = '0.08';
+our $VERSION     = '0.09';
 our %EXPORT_TAGS = (
     util => [
         qw/

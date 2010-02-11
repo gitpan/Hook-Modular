@@ -4,7 +4,7 @@ use strict;
 use File::Path;
 use File::Spec;
 use UNIVERSAL::require;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 sub new {
     my ($class, $conf, $name) = @_;

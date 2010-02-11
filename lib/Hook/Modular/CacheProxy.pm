@@ -1,7 +1,7 @@
 package Hook::Modular::CacheProxy;
 use warnings;
 use strict;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 sub new {
     my ($class, $plugin, $cache) = @_;
