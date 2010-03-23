@@ -1,6 +1,10 @@
-package Hook::Modular::Plugin;
-use warnings;
+use 5.008;
 use strict;
+use warnings;
+
+package Hook::Modular::Plugin;
+our $VERSION = '1.100820';
+# ABSTRACT: Base class for plugins
 use File::Find::Rule ();    # don't import rule()
 use File::Spec;
 use File::Basename;
@@ -9,7 +13,6 @@ use Hook::Modular::Crypt;
 use Hook::Modular::Rule;
 use Hook::Modular::Rules;
 use Scalar::Util qw(blessed);
-our $VERSION = '0.09';
 use base qw( Class::Accessor::Fast );
 __PACKAGE__->mk_accessors(qw(rule_hook cache));
 
@@ -126,15 +129,23 @@ sub load_assets {
     }
 }
 1;
-__END__
 
-=for test_synopsis
-1;
+
 __END__
+=pod
 
 =head1 NAME
 
-Hook::Modular::Plugin - base class for plugins
+Hook::Modular::Plugin - Base class for plugins
+
+=head1 VERSION
+
+version 1.100820
+
+=for stopwords conf
+
+=for test_synopsis 1;
+__END__
 
 =head1 SYNOPSIS
 
@@ -199,9 +210,7 @@ the synopsis.
 
 =head1 METHODS
 
-=over 4
-
-=item C<new>
+=head2 new
 
 Creates a new object and initializes it. Normally you don't call this method
 yourself, however. Instead, L<Hook::Modular> calls it when loading the plugins
@@ -236,15 +245,53 @@ This encryption and decryption is only happening if your main class, the one
 subclassing Hook::Modular, says it should. See C<SHOULD_REWRITE_CONFIG> in
 L<Hook::Modular> for details.
 
-=item C<conf>
+=head2 conf
 
 Returns the plugin's configuration hash.
 
-=item C<rule>
+=head2 rule
 
 Returns the plugin's rule settings.
 
-=back
+=head2 assets_dir
+
+FIXME
+
+=head2 class_id
+
+FIXME
+
+=head2 decrypt_config
+
+FIXME
+
+=head2 dispatch_rule_on
+
+FIXME
+
+=head2 do_walk
+
+FIXME
+
+=head2 init
+
+FIXME
+
+=head2 load_assets
+
+FIXME
+
+=head2 log
+
+FIXME
+
+=head2 plugin_id
+
+FIXME
+
+=head2 walk_config_encryption
+
+FIXME
 
 =head1 PLUGIN CONFIGURATION
 
@@ -357,35 +404,40 @@ C<My::Test::Plugin> and your plugin package name is
 C<My::Test::Plugin::Some::Printer>, then the default assets directory would be
 C<$Bin/assets/plugins/Some-Printer>.
 
+=head1 INSTALLATION
+
+See perlmodinstall for information and options on installing Perl modules.
+
 =head1 BUGS AND LIMITATIONS
 
 No bugs have been reported.
 
 Please report any bugs or feature requests through the web interface at
-L<http://rt.cpan.org>.
-
-=head1 INSTALLATION
-
-See perlmodinstall for information and options on installing Perl modules.
+L<http://rt.cpan.org/Public/Dist/Display.html?Name=Hook-Modular>.
 
 =head1 AVAILABILITY
 
 The latest version of this module is available from the Comprehensive Perl
-Archive Network (CPAN). Visit <http://www.perl.com/CPAN/> to find a CPAN
-site near you. Or see L<http://search.cpan.org/dist/Hook-Modular/>.
+Archive Network (CPAN). Visit L<http://www.perl.com/CPAN/> to find a CPAN
+site near you, or see
+L<http://search.cpan.org/dist/Hook-Modular/>.
+
+The development version lives at
+L<http://github.com/hanekomu/Hook-Modular/>.
+Instead of sending patches, please fork this project using the standard git
+and github infrastructure.
 
 =head1 AUTHORS
 
-Tatsuhiko Miyagawa C<< <miyagawa@bulknews.net> >>
-
-Marcel GrE<uuml>nauer, C<< <marcel@cpan.org> >>
+  Marcel Gruenauer <marcel@cpan.org>
+  Tatsuhiko Miyagawa <miyagawa@bulknews.net>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2007-2009 by the authors.
+This software is copyright (c) 2007 by Marcel Gruenauer.
 
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
 
 =cut
 

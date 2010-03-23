@@ -1,4 +1,5 @@
 package My::Test::Plugin::Some::Printer;
+our $VERSION = '1.100820';
 use warnings;
 use strict;
 use base 'Hook::Modular::Plugin';

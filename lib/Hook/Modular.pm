@@ -1,7 +1,9 @@
-package Hook::Modular;
-use 5.006;
-use warnings;
+use 5.008;
 use strict;
+use warnings;
+
+package Hook::Modular;
+# ABSTRACT: Making pluggable applications easy
 use Encode ();
 use Data::Dumper;
 use File::Copy;
@@ -233,7 +235,7 @@ sub load_plugin {
     if ($module->isa($self->{conf}{plugin_namespace})) {
         $self->log(debug => "$module is loaded elsewhere ... maybe .t script?");
     } elsif (my $path = $self->plugins_path->{$module}) {
-        eval { require $path } or die $@;
+        $path->require or die $@;
     } else {
         $module->require or die $@;
     }
@@ -344,15 +346,22 @@ sub dumper {
     $self->log(debug => Dumper $stuff);
 }
 1;
-__END__
 
-=for test_synopsis
-1;
-__END__
+
+=pod
 
 =head1 NAME
 
 Hook::Modular - Making pluggable applications easy
+
+=head1 VERSION
+
+version 1.100820
+
+=for stopwords conf
+
+=for test_synopsis 1;
+__END__
 
 =head1 SYNOPSIS
 
@@ -446,9 +455,7 @@ Hook::Modular supports rule-based dispatch of plugins.
 
 =head1 METHODS
 
-=over 4
-
-=item C<new>
+=head2 new
 
   my $obj = Hook::Modular->new(config => $config_file_name);
 
@@ -533,7 +540,7 @@ for details.
 
 =back
 
-=item C<context, set_context>
+=head2 context, set_context
 
   my $context = $self->context;
   $self->set_context($context);
@@ -541,7 +548,7 @@ for details.
 Gets and sets (respectively) the global context. It is singular; each program
 has only one context. This can be used to communicate between the plugins.
 
-=item C<conf>
+=head2 conf
 
   my %conf = $self->conf;
   my $plugin_path = $self->conf->{plugin_path} || [];
@@ -551,7 +558,7 @@ Returns a hash that has the application-wide configuration. It is set during
 C<new()> from the C<global> section of the configuration data and augmented
 with various other settings.
 
-=item PLUGIN_NAMESPACE
+=head2 PLUGIN_NAMESPACE
 
   package My::TestApp;
   use base 'Hook::Modular';
@@ -569,7 +576,7 @@ In the config file, you can specify it this way:
   global:
     plugin_namespace: My::Test::Plugin
 
-=item SHOULD_REWRITE_CONFIG
+=head2 SHOULD_REWRITE_CONFIG
 
   package My::TestApp;
   use base 'Hook::Modular';
@@ -585,7 +592,7 @@ In the config file, you can specify it this way:
   global:
     should_rewrite_config: 1
 
-=item C<add_to_rule_namespace>
+=head2 add_to_rule_namespace
 
   $self->add_to_rule_namespaces(
     qw/Some::Rule::Namespace Other::Rule::Namespace/);
@@ -613,43 +620,130 @@ or, if you only want to add one rule namespace:
   global:
     rule_namespaces: Some::Thing::Rule
 
-=item C<rule_namespaces>
+=head2 rule_namespaces
 
   my @ns = $self->rule_namespaces;
 
 Returns the list of rule namespaces. See the documentation of
 C<add_to_rule_namespaces> for details.
 
-=back
+=head2 add_plugin_path
+
+FIXME
+
+=head2 add_rewrite_task
+
+FIXME
+
+=head2 add_to_rule_namespaces
+
+FIXME
+
+=head2 autoload_plugin
+
+FIXME
+
+=head2 dumper
+
+FIXME
+
+=head2 error
+
+FIXME
+
+=head2 extract_package
+
+FIXME
+
+=head2 home_dir
+
+FIXME
+
+=head2 init
+
+FIXME
+
+=head2 is_loaded
+
+FIXME
+
+=head2 load_cache
+
+FIXME
+
+=head2 load_plugin
+
+FIXME
+
+=head2 load_plugins
+
+FIXME
+
+=head2 register_hook
+
+FIXME
+
+=head2 rewrite_config
+
+FIXME
+
+=head2 run
+
+FIXME
+
+=head2 run_hook
+
+FIXME
+
+=head2 run_hook_once
+
+FIXME
+
+=head2 run_main
+
+FIXME
+
+=head2 should_log
+
+FIXME
+
+=head1 INSTALLATION
+
+See perlmodinstall for information and options on installing Perl modules.
 
 =head1 BUGS AND LIMITATIONS
 
 No bugs have been reported.
 
 Please report any bugs or feature requests through the web interface at
-L<http://rt.cpan.org>.
-
-=head1 INSTALLATION
-
-See perlmodinstall for information and options on installing Perl modules.
+L<http://rt.cpan.org/Public/Dist/Display.html?Name=Hook-Modular>.
 
 =head1 AVAILABILITY
 
 The latest version of this module is available from the Comprehensive Perl
-Archive Network (CPAN). Visit <http://www.perl.com/CPAN/> to find a CPAN
-site near you. Or see L<http://search.cpan.org/dist/Hook-Modular/>.
+Archive Network (CPAN). Visit L<http://www.perl.com/CPAN/> to find a CPAN
+site near you, or see
+L<http://search.cpan.org/dist/Hook-Modular/>.
+
+The development version lives at
+L<http://github.com/hanekomu/Hook-Modular/>.
+Instead of sending patches, please fork this project using the standard git
+and github infrastructure.
 
 =head1 AUTHORS
 
-Tatsuhiko Miyagawa C<< <miyagawa@bulknews.net> >>
-
-Marcel GrE<uuml>nauer, C<< <marcel@cpan.org> >>
+  Marcel Gruenauer <marcel@cpan.org>
+  Tatsuhiko Miyagawa <miyagawa@bulknews.net>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2007-2009 by the authors.
+This software is copyright (c) 2007 by Marcel Gruenauer.
 
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
 
 =cut
+
+
+__END__
+

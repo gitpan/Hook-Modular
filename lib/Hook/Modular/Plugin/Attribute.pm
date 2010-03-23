@@ -1,7 +1,10 @@
-package Hook::Modular::Plugin::Attribute;
-use warnings;
+use 5.008;
 use strict;
-our $VERSION = '0.09';
+use warnings;
+
+package Hook::Modular::Plugin::Attribute;
+our $VERSION = '1.100820';
+# ABSTRACT: Base class for plugins constructed with attributes
 use base qw(
   Hook::Modular::Plugin
   Attribute::Handlers
@@ -35,77 +38,63 @@ sub register {
 }
 sub register_manually { }
 1;
+
+
 __END__
+=pod
 
 =head1 NAME
 
-Hook::Modular::Plugin - base class for plugins constructed with attributes
+Hook::Modular::Plugin::Attribute - Base class for plugins constructed with attributes
 
-=head1 SYNOPSIS
+=head1 VERSION
 
-  package My::Test::Plugin::Some::Printer;
-  use warnings;
-  use strict;
-  use base 'Hook::Modular::Plugin::Attribute';
-  
-  sub do_print :Hook(output.print) {
-      # ...
-  }
+version 1.100820
 
-=head1 DESCRIPTION
+=head1 METHODS
 
-NOTE: This is a documentation in progress. Not all features or quirks of this
-class have been documented yet.
+=head2 register
 
-This is a subclass of L<Hook::Modular::Plugin> that provides an attribute for
-denoting hook subroutines more directly. Plugins wishing to use this attribute
-should subclass this class.
+FIXME
 
-For everything else related to writing plugins see the documentation of
-L<Hook::Modular::Plugin>.
+=head2 register_manually
 
-=head1 ATTRIBUTE
+FIXME
 
-=over 4
+=head1 INSTALLATION
 
-=item :Hook
-
-Blah.
-
-You can mix attribute-based hook declarations with manual registration. For
-example:
-
-=back
+See perlmodinstall for information and options on installing Perl modules.
 
 =head1 BUGS AND LIMITATIONS
 
 No bugs have been reported.
 
 Please report any bugs or feature requests through the web interface at
-L<http://rt.cpan.org>.
-
-=head1 INSTALLATION
-
-See perlmodinstall for information and options on installing Perl modules.
+L<http://rt.cpan.org/Public/Dist/Display.html?Name=Hook-Modular>.
 
 =head1 AVAILABILITY
 
 The latest version of this module is available from the Comprehensive Perl
-Archive Network (CPAN). Visit <http://www.perl.com/CPAN/> to find a CPAN
-site near you. Or see L<http://search.cpan.org/dist/Hook-Modular/>.
+Archive Network (CPAN). Visit L<http://www.perl.com/CPAN/> to find a CPAN
+site near you, or see
+L<http://search.cpan.org/dist/Hook-Modular/>.
+
+The development version lives at
+L<http://github.com/hanekomu/Hook-Modular/>.
+Instead of sending patches, please fork this project using the standard git
+and github infrastructure.
 
 =head1 AUTHORS
 
-Tatsuhiko Miyagawa C<< <miyagawa@bulknews.net> >>
-
-Marcel GrE<uuml>nauer, C<< <marcel@cpan.org> >>
+  Marcel Gruenauer <marcel@cpan.org>
+  Tatsuhiko Miyagawa <miyagawa@bulknews.net>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2007-2009 by the authors.
+This software is copyright (c) 2007 by Marcel Gruenauer.
 
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
 
 =cut
 

@@ -1,5 +1,8 @@
 Revision history for Perl extension Hook-Modular
 
+1.100820  2010-03-23 16:49:02 Europe/Vienna
+    - converted the distribution to Dist::Zilla-style
+
 0.09  Thu 2010.02.11 16:17:27 CET (Marcel Gruenauer <marcel@cpan.org>)
      - Added Hook::Modular::Builder.
 
