@@ -3,7 +3,9 @@ use strict;
 use warnings;
 
 package Hook::Modular::Plugin;
-our $VERSION = '1.100820';
+BEGIN {
+  $Hook::Modular::Plugin::VERSION = '1.101010';
+}
 # ABSTRACT: Base class for plugins
 use File::Find::Rule ();    # don't import rule()
 use File::Spec;
@@ -13,7 +15,7 @@ use Hook::Modular::Crypt;
 use Hook::Modular::Rule;
 use Hook::Modular::Rules;
 use Scalar::Util qw(blessed);
-use base qw( Class::Accessor::Fast );
+use parent qw( Class::Accessor::Fast );
 __PACKAGE__->mk_accessors(qw(rule_hook cache));
 
 sub new {
@@ -134,18 +136,18 @@ sub load_assets {
 __END__
 =pod
 
+=for stopwords conf
+
+=for test_synopsis 1;
+__END__
+
 =head1 NAME
 
 Hook::Modular::Plugin - Base class for plugins
 
 =head1 VERSION
 
-version 1.100820
-
-=for stopwords conf
-
-=for test_synopsis 1;
-__END__
+version 1.101010
 
 =head1 SYNOPSIS
 
@@ -170,7 +172,7 @@ here is the plugin:
   package My::Test::Plugin::Some::Printer;
   use warnings;
   use strict;
-  use base 'Hook::Modular::Plugin';
+  use parent 'Hook::Modular::Plugin';
   
   sub register {
       my ($self, $context) = @_;
@@ -182,7 +184,7 @@ here is the plugin:
 
 And this is C<some_app.pl>
 
-  use base 'Hook::Modular';
+  use parent 'Hook::Modular';
 
   use constant PLUGIN_NAMESPACE => 'My::Test::Plugin';
 

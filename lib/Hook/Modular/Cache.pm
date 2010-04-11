@@ -3,14 +3,16 @@ use strict;
 use warnings;
 
 package Hook::Modular::Cache;
-our $VERSION = '1.100820';
+BEGIN {
+  $Hook::Modular::Cache::VERSION = '1.101010';
+}
 # ABSTRACT: Cache for Hook::Modular
 use File::Path;
 use File::Spec;
 use UNIVERSAL::require;
 
 sub new {
-    my ($class, $conf, $name) = @_;
+    my ($class, $conf) = @_;
     mkdir $conf->{base}, 0700 unless -e $conf->{base} && -d_;
 
     # Cache default configuration
@@ -76,7 +78,7 @@ sub get_callback {
 }
 
 sub set {
-    my ($self, $key, $value, $expiry) = @_;
+    my ($self, $value) = @_[0,2];
     my $setter = $self->{cache}->isa('Cache') && ref $value ? 'freeze' : 'set';
     $self->{cache}->$setter(@_);
 }
@@ -102,7 +104,7 @@ Hook::Modular::Cache - Cache for Hook::Modular
 
 =head1 VERSION
 
-version 1.100820
+version 1.101010
 
 =head1 METHODS
 

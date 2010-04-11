@@ -3,7 +3,9 @@ use strict;
 use warnings;
 
 package Hook::Modular::Operator;
-our $VERSION = '1.100820';
+BEGIN {
+  $Hook::Modular::Operator::VERSION = '1.101010';
+}
 # ABSTRACT: Boolean operators for plugins
 use List::Util qw(reduce);
 our %Ops     = (
@@ -16,12 +18,14 @@ our %Ops     = (
 );
 
 sub is_valid_op {
-    my ($class, $op) = @_;
+    shift;   # we don't need the class
+    my $op = shift;
     exists $Ops{$op};
 }
 
 sub call {
-    my ($class, $op, @bool) = @_;
+    shift;   # we don't need the class
+    my ($op, @bool) = @_;
     my $bool = reduce { $Ops{$op}->[0]->($a, $b) } @bool;
     $bool = !$bool if $Ops{$op}->[1];
     $bool;
@@ -38,7 +42,7 @@ Hook::Modular::Operator - Boolean operators for plugins
 
 =head1 VERSION
 
-version 1.100820
+version 1.101010
 
 =head1 METHODS
 

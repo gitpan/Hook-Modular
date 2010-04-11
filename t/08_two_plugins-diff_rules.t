@@ -5,7 +5,7 @@ use FindBin '$Bin';
 use lib File::Spec->catdir($Bin, 'lib');
 use Hook::Modular::Test ':all';
 use Test::More tests => 1;
-use base 'Hook::Modular';
+use parent 'Hook::Modular';
 
 # Two plugins: one uses "Always", one "Never". This tests that rules can be
 # found in different namespaces: Hook::Modular::Rule::Always and

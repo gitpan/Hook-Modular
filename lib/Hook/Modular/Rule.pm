@@ -3,12 +3,15 @@ use strict;
 use warnings;
 
 package Hook::Modular::Rule;
-our $VERSION = '1.100820';
+BEGIN {
+  $Hook::Modular::Rule::VERSION = '1.101010';
+}
 # ABSTRACT: A Workflow rule
 use UNIVERSAL::require;
 
 sub new {
-    my ($class, $config) = @_;
+    shift;   # we don't need the class
+    my $config = shift;
     if (my $exp = $config->{expression}) {
         $config->{module} = 'Expression';
     }
@@ -44,7 +47,7 @@ Hook::Modular::Rule - A Workflow rule
 
 =head1 VERSION
 
-version 1.100820
+version 1.101010
 
 =head1 METHODS
 

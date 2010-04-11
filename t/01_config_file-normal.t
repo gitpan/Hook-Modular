@@ -5,7 +5,7 @@ use FindBin '$Bin';
 use lib File::Spec->catdir($Bin, 'lib');
 use Hook::Modular::Test ':all';
 use Test::More tests => 1;
-use base 'Hook::Modular';
+use parent 'Hook::Modular';
 
 # specifying the appropriate plugin namespace for this program saves you from
 # having to specify it in every config file.

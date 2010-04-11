@@ -2,7 +2,7 @@ NAME
     Hook::Modular - Making pluggable applications easy
 
 VERSION
-    version 1.100820
+    version 1.101010
 
 SYNOPSIS
     In "some_config.yaml"
@@ -26,7 +26,7 @@ SYNOPSIS
       package My::Test::Plugin::Some::Printer;
       use warnings;
       use strict;
-      use base 'Hook::Modular::Plugin';
+      use parent 'Hook::Modular::Plugin';
   
       sub register {
           my ($self, $context) = @_;
@@ -38,7 +38,7 @@ SYNOPSIS
 
     And this is "some_app.pl"
 
-      use base 'Hook::Modular';
+      use parent 'Hook::Modular';
 
       use constant PLUGIN_NAMESPACE => 'My::Test::Plugin';
 
@@ -177,7 +177,7 @@ METHODS
 
   PLUGIN_NAMESPACE
       package My::TestApp;
-      use base 'Hook::Modular';
+      use parent 'Hook::Modular';
       use constant PLUGIN_NAMESPACE => 'My::Test::Plugin';
 
     A constant that specifies the namespace that is prepended to plugin
@@ -194,7 +194,7 @@ METHODS
 
   SHOULD_REWRITE_CONFIG
       package My::TestApp;
-      use base 'Hook::Modular';
+      use parent 'Hook::Modular';
       use constant SHOULD_REWRITE_CONFIG => 1;
 
     Hook::Modular can rewrite your config file, for example, to turn

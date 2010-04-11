@@ -1,125 +1,128 @@
 {
-   "resources" : {
-      "homepage" : "http://search.cpan.org/dist/Hook-Modular/",
-      "repository" : "http://github.com/hanekomu/Hook-Modular",
-      "bugtracker" : "http://rt.cpan.org/Public/Dist/Display.html?Name=Hook-Modular"
-   },
-   "generated_by" : "Dist::Zilla version 1.100711",
-   "meta-spec" : {
-      "version" : 1.4,
-      "url" : "http://module-build.sourceforge.net/META-spec-v1.4.html"
-   },
-   "version" : "1.100820",
-   "name" : "Hook-Modular",
+   "abstract" : "Making pluggable applications easy",
    "author" : [
       "Marcel Gruenauer <marcel@cpan.org>",
       "Tatsuhiko Miyagawa <miyagawa@bulknews.net>"
    ],
+   "build_requires" : {
+      "English" : "0",
+      "File::Find" : "0",
+      "FindBin" : "0",
+      "Test::More" : "0.94"
+   },
+   "configure_requires" : {
+      "ExtUtils::MakeMaker" : "6.31"
+   },
+   "generated_by" : "Dist::Zilla version 2.100991",
    "license" : "perl",
-   "build_requires" : {},
+   "meta-spec" : {
+      "url" : "http://module-build.sourceforge.net/META-spec-v1.4.html",
+      "version" : 1.4
+   },
+   "name" : "Hook-Modular",
    "provides" : {
-      "Hook::Modular::Walker" : {
-         "version" : "1.100820",
-         "file" : "lib/Hook/Modular/Walker.pm"
-      },
-      "Hook::Modular::Test" : {
-         "version" : "1.100820",
-         "file" : "lib/Hook/Modular/Test.pm"
-      },
-      "Hook::Modular::Cache" : {
-         "version" : "1.100820",
-         "file" : "lib/Hook/Modular/Cache.pm"
-      },
-      "Hook::Modular::Plugin::Attribute" : {
-         "version" : "1.100820",
-         "file" : "lib/Hook/Modular/Plugin/Attribute.pm"
-      },
-      "Hook::Modular::Crypt" : {
-         "version" : "1.100820",
-         "file" : "lib/Hook/Modular/Crypt.pm"
-      },
       "Hook::Modular" : {
-         "version" : "1.100820",
-         "file" : "lib/Hook/Modular.pm"
-      },
-      "Hook::Modular::Cache::Null" : {
-         "version" : "1.100820",
-         "file" : "lib/Hook/Modular/Cache/Null.pm"
-      },
-      "Hook::Modular::Crypt::Base64" : {
-         "version" : "1.100820",
-         "file" : "lib/Hook/Modular/Crypt/Base64.pm"
-      },
-      "Hook::Modular::Rule" : {
-         "version" : "1.100820",
-         "file" : "lib/Hook/Modular/Rule.pm"
+         "file" : "lib/Hook/Modular.pm",
+         "version" : "1.101010"
       },
       "Hook::Modular::Builder" : {
-         "version" : "1.100820",
-         "file" : "lib/Hook/Modular/Builder.pm"
+         "file" : "lib/Hook/Modular/Builder.pm",
+         "version" : "1.101010"
+      },
+      "Hook::Modular::Cache" : {
+         "file" : "lib/Hook/Modular/Cache.pm",
+         "version" : "1.101010"
+      },
+      "Hook::Modular::Cache::Null" : {
+         "file" : "lib/Hook/Modular/Cache/Null.pm",
+         "version" : "1.101010"
       },
       "Hook::Modular::CacheProxy" : {
-         "version" : "1.100820",
-         "file" : "lib/Hook/Modular/CacheProxy.pm"
+         "file" : "lib/Hook/Modular/CacheProxy.pm",
+         "version" : "1.101010"
       },
       "Hook::Modular::ConfigLoader" : {
-         "version" : "1.100820",
-         "file" : "lib/Hook/Modular/ConfigLoader.pm"
+         "file" : "lib/Hook/Modular/ConfigLoader.pm",
+         "version" : "1.101010"
+      },
+      "Hook::Modular::Crypt" : {
+         "file" : "lib/Hook/Modular/Crypt.pm",
+         "version" : "1.101010"
+      },
+      "Hook::Modular::Crypt::Base64" : {
+         "file" : "lib/Hook/Modular/Crypt/Base64.pm",
+         "version" : "1.101010"
       },
       "Hook::Modular::Operator" : {
-         "version" : "1.100820",
-         "file" : "lib/Hook/Modular/Operator.pm"
-      },
-      "Hook::Modular::Rules" : {
-         "version" : "1.100820",
-         "file" : "lib/Hook/Modular/Rules.pm"
-      },
-      "Hook::Modular::Rule::Expression" : {
-         "version" : "1.100820",
-         "file" : "lib/Hook/Modular/Rule/Expression.pm"
+         "file" : "lib/Hook/Modular/Operator.pm",
+         "version" : "1.101010"
       },
       "Hook::Modular::Plugin" : {
-         "version" : "1.100820",
-         "file" : "lib/Hook/Modular/Plugin.pm"
+         "file" : "lib/Hook/Modular/Plugin.pm",
+         "version" : "1.101010"
+      },
+      "Hook::Modular::Plugin::Attribute" : {
+         "file" : "lib/Hook/Modular/Plugin/Attribute.pm",
+         "version" : "1.101010"
+      },
+      "Hook::Modular::Rule" : {
+         "file" : "lib/Hook/Modular/Rule.pm",
+         "version" : "1.101010"
       },
       "Hook::Modular::Rule::Always" : {
-         "version" : "1.100820",
-         "file" : "lib/Hook/Modular/Rule/Always.pm"
+         "file" : "lib/Hook/Modular/Rule/Always.pm",
+         "version" : "1.101010"
+      },
+      "Hook::Modular::Rule::Expression" : {
+         "file" : "lib/Hook/Modular/Rule/Expression.pm",
+         "version" : "1.101010"
+      },
+      "Hook::Modular::Rules" : {
+         "file" : "lib/Hook/Modular/Rules.pm",
+         "version" : "1.101010"
+      },
+      "Hook::Modular::Test" : {
+         "file" : "lib/Hook/Modular/Test.pm",
+         "version" : "1.101010"
+      },
+      "Hook::Modular::Walker" : {
+         "file" : "lib/Hook/Modular/Walker.pm",
+         "version" : "1.101010"
       }
    },
+   "recommends" : {},
    "requires" : {
-      "Scalar::Util" : "0",
-      "UNIVERSAL" : "0",
-      "YAML" : "0",
-      "FindBin" : "0",
-      "File::Spec" : "0",
-      "Module::Pluggable::Fast" : "0",
-      "Storable" : "0",
-      "Class::Accessor::Fast" : "0",
-      "Encode" : "0",
-      "List::Util" : "0",
-      "File::Find" : "0",
-      "File::Path" : "0",
-      "File::Find::Rule" : "0",
-      "File::Copy" : "0",
       "Attribute::Handlers" : "0",
-      "English" : "0",
-      "File::HomeDir" : "0",
-      "Data::Dumper" : "0",
-      "constant" : "0",
-      "Exporter" : "0",
       "Carp" : "0",
-      "perl" : "5.008",
-      "Test::More" : "0.88",
-      "Term::Encoding" : "0",
-      "MIME::Base64" : "0",
-      "File::Temp" : "0",
+      "Class::Accessor::Fast" : "0",
+      "Data::Dumper" : "0",
+      "Encode" : "0",
+      "Exporter" : "0",
       "File::Basename" : "0",
-      "UNIVERSAL::require" : "0"
+      "File::Copy" : "0",
+      "File::Find::Rule" : "0",
+      "File::HomeDir" : "0",
+      "File::Path" : "0",
+      "File::Spec" : "0",
+      "File::Temp" : "0",
+      "List::Util" : "0",
+      "MIME::Base64" : "0",
+      "Module::Pluggable" : "0",
+      "Scalar::Util" : "0",
+      "Storable" : "0",
+      "Term::Encoding" : "0",
+      "UNIVERSAL" : "0",
+      "UNIVERSAL::require" : "0",
+      "YAML" : "0",
+      "constant" : "0",
+      "parent" : "0",
+      "perl" : "5.008"
    },
-   "abstract" : "Making pluggable applications easy",
-   "configure_requires" : {
-      "ExtUtils::MakeMaker" : "6.11"
-   }
+   "resources" : {
+      "bugtracker" : "http://rt.cpan.org/Public/Dist/Display.html?Name=Hook-Modular",
+      "homepage" : "http://search.cpan.org/dist/Hook-Modular/",
+      "repository" : "http://github.com/hanekomu/Hook-Modular"
+   },
+   "version" : "1.101010"
 }
 

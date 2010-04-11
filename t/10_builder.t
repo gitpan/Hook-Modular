@@ -5,7 +5,7 @@ use FindBin '$Bin';
 use lib File::Spec->catdir($Bin, 'lib');
 use Test::More tests => 1;
 use Hook::Modular::Builder;
-use base 'Hook::Modular';
+use parent 'Hook::Modular';
 
 # Test that we can specify config via a scalar reference and hash reference.
 # specifying the appropriate plugin namespace for this program saves you from

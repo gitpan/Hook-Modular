@@ -7,7 +7,7 @@ use Hook::Modular::Test ':all';
 use Hook::Modular::Crypt;
 use YAML 'LoadFile';
 use Test::More tests => 3;
-use base 'Hook::Modular';
+use parent 'Hook::Modular';
 
 # specifying the appropriate plugin namespace for this program saves you from
 # having to specify it in every config file.

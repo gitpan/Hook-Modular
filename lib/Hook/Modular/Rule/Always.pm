@@ -3,9 +3,11 @@ use strict;
 use warnings;
 
 package Hook::Modular::Rule::Always;
-our $VERSION = '1.100820';
+BEGIN {
+  $Hook::Modular::Rule::Always::VERSION = '1.101010';
+}
 # ABSTRACT: Rule dispatcher that always matches
-use base 'Hook::Modular::Rule';
+use parent 'Hook::Modular::Rule';
 sub dispatch { 1 }
 1;
 
@@ -19,7 +21,7 @@ Hook::Modular::Rule::Always - Rule dispatcher that always matches
 
 =head1 VERSION
 
-version 1.100820
+version 1.101010
 
 =head1 METHODS
 

@@ -3,6 +3,9 @@ use strict;
 use warnings;
 
 package Hook::Modular;
+BEGIN {
+  $Hook::Modular::VERSION = '1.101010';
+}
 # ABSTRACT: Making pluggable applications easy
 use Encode ();
 use Data::Dumper;
@@ -12,9 +15,8 @@ use File::Basename;
 use File::Find::Rule ();    # don't import rule()!
 use Hook::Modular::ConfigLoader;
 use UNIVERSAL::require;
-use base qw( Class::Accessor::Fast );
+use parent qw( Class::Accessor::Fast );
 __PACKAGE__->mk_accessors(qw(conf plugins_path cache));
-our $VERSION = '0.09';
 use constant CACHE_CLASS           => 'Hook::Modular::Cache';
 use constant CACHE_PROXY_CLASS     => 'Hook::Modular::CacheProxy';
 use constant PLUGIN_NAMESPACE      => 'Hook::Modular::Plugin';
@@ -102,7 +104,6 @@ sub rewrite_config {
       or $self->error("$self->{config_path}: $!");
     my $data = join '', <$fh>;
     close $fh;
-    my $old = $data;
     my $count;
 
     # xxx this is a quick hack: It should be a YAML roundtrip maybe
@@ -337,7 +338,7 @@ sub error {
     my ($self, $msg) = @_;
     my ($caller, $filename, $line) = caller(0);
     chomp($msg);
-    die "$caller [fatal] $msg at line $line\n";
+    die "$caller [fatal] $msg at file $filename line $line\n";
 }
 
 sub dumper {
@@ -350,18 +351,18 @@ sub dumper {
 
 =pod
 
+=for stopwords conf
+
+=for test_synopsis 1;
+__END__
+
 =head1 NAME
 
 Hook::Modular - Making pluggable applications easy
 
 =head1 VERSION
 
-version 1.100820
-
-=for stopwords conf
-
-=for test_synopsis 1;
-__END__
+version 1.101010
 
 =head1 SYNOPSIS
 
@@ -386,7 +387,7 @@ here is the plugin:
   package My::Test::Plugin::Some::Printer;
   use warnings;
   use strict;
-  use base 'Hook::Modular::Plugin';
+  use parent 'Hook::Modular::Plugin';
   
   sub register {
       my ($self, $context) = @_;
@@ -398,7 +399,7 @@ here is the plugin:
 
 And this is C<some_app.pl>
 
-  use base 'Hook::Modular';
+  use parent 'Hook::Modular';
 
   use constant PLUGIN_NAMESPACE => 'My::Test::Plugin';
 
@@ -561,7 +562,7 @@ with various other settings.
 =head2 PLUGIN_NAMESPACE
 
   package My::TestApp;
-  use base 'Hook::Modular';
+  use parent 'Hook::Modular';
   use constant PLUGIN_NAMESPACE => 'My::Test::Plugin';
 
 A constant that specifies the namespace that is prepended to plugin names
@@ -579,7 +580,7 @@ In the config file, you can specify it this way:
 =head2 SHOULD_REWRITE_CONFIG
 
   package My::TestApp;
-  use base 'Hook::Modular';
+  use parent 'Hook::Modular';
   use constant SHOULD_REWRITE_CONFIG => 1;
 
 Hook::Modular can rewrite your config file, for example, to turn passwords

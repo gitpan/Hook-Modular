@@ -3,16 +3,19 @@ use strict;
 use warnings;
 
 package Hook::Modular::Crypt;
-our $VERSION = '1.100820';
+BEGIN {
+  $Hook::Modular::Crypt::VERSION = '1.101010';
+}
 # ABSTRACT: Crypt mechanism for passwords in workflows
-use Module::Pluggable::Fast
-  search  => [qw/Hook::Modular::Crypt/],
+use Module::Pluggable
+  search_path  => [qw/Hook::Modular::Crypt/],
   require => 1;
 my %handlers = map { $_->id => $_ } __PACKAGE__->plugins;
 my $re = "^(" . join("|", map $_->id, __PACKAGE__->plugins) . ")::";
 
 sub decrypt {
-    my ($class, $ciphertext, @args) = @_;
+    shift;   # we don't need the class
+    my ($ciphertext, @args) = @_;
     if ($ciphertext =~ s!$re!!) {
         my $handler = $handlers{$1};
         my @param = split /::/, $ciphertext;
@@ -22,7 +25,8 @@ sub decrypt {
 }
 
 sub encrypt {
-    my ($class, $plaintext, $driver, @param) = @_;
+    shift;   # we don't need the class
+    my ($plaintext, $driver, @param) = @_;
     my $handler = $handlers{$driver}
       or Hook::Modular::Crypt->context->error("No crypt handler for $driver");
     join '::', $driver, $handler->encrypt($plaintext, @param);
@@ -39,7 +43,7 @@ Hook::Modular::Crypt - Crypt mechanism for passwords in workflows
 
 =head1 VERSION
 
-version 1.100820
+version 1.101010
 
 =head1 METHODS
 

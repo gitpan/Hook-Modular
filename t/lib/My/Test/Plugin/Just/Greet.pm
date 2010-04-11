@@ -1,8 +1,7 @@
 package My::Test::Plugin::Just::Greet;
-our $VERSION = '1.100820';
 use warnings;
 use strict;
-use base 'Hook::Modular::Plugin';
+use parent 'Hook::Modular::Plugin';
 
 sub register {
     my ($self, $context) = @_;

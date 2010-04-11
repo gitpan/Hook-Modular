@@ -3,7 +3,9 @@ use strict;
 use warnings;
 
 package Hook::Modular::Walker;
-our $VERSION = '1.100820';
+BEGIN {
+  $Hook::Modular::Walker::VERSION = '1.101010';
+}
 # ABSTRACT: Methods that walk over the workflow
 use Carp;
 use Scalar::Util qw(blessed);
@@ -53,7 +55,8 @@ sub apply($&;@) {    ## no critic
 }
 
 sub serialize {
-    my ($class, $stuff) = @_;
+    shift;   # we don't need the class
+    my $stuff = shift;
     my $curry;
     $curry = sub {
         my @retval;
@@ -82,15 +85,15 @@ sub serialize {
 __END__
 =pod
 
+=for stopwords isa
+
 =head1 NAME
 
 Hook::Modular::Walker - Methods that walk over the workflow
 
 =head1 VERSION
 
-version 1.100820
-
-=for stopwords isa
+version 1.101010
 
 =head1 METHODS
 

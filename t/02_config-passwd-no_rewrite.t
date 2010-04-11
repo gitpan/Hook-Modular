@@ -6,7 +6,7 @@ use lib File::Spec->catdir($Bin, 'lib');
 use Hook::Modular::Test ':all';
 use YAML 'LoadFile';
 use Test::More tests => 2;
-use base 'Hook::Modular';
+use parent 'Hook::Modular';
 
 # specifying the appropriate plugin namespace for this program saves you from
 # having to specify it in every config file.

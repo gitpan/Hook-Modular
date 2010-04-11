@@ -5,7 +5,7 @@ use FindBin '$Bin';
 use lib File::Spec->catdir($Bin, 'lib');
 use Test::More tests => 6;
 use YAML;
-use base 'Hook::Modular';
+use parent 'Hook::Modular';
 
 # Test that we can't rewrite a password that didn't come from a config file.
 # specifying the appropriate plugin namespace for this program saves you from

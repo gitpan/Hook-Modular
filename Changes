@@ -1,5 +1,10 @@
 Revision history for Perl extension Hook-Modular
 
+1.101010  2010-04-11 12:43:43 Europe/Vienna
+    - use parent instead of use base
+    - don't use Module::Pluggable::Fast anymore, just Module::Pluggable
+    - remove unused variables
+
 1.100820  2010-03-23 16:49:02 Europe/Vienna
     - converted the distribution to Dist::Zilla-style
 

@@ -3,7 +3,9 @@ use strict;
 use warnings;
 
 package Hook::Modular::CacheProxy;
-our $VERSION = '1.100820';
+BEGIN {
+  $Hook::Modular::CacheProxy::VERSION = '1.101010';
+}
 # ABSTRACT: Cache proxy for Hook::Modular
 
 sub new {
@@ -39,7 +41,7 @@ Hook::Modular::CacheProxy - Cache proxy for Hook::Modular
 
 =head1 VERSION
 
-version 1.100820
+version 1.101010
 
 =head1 METHODS
 

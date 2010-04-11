@@ -3,9 +3,11 @@ use strict;
 use warnings;
 
 package Hook::Modular::Plugin::Attribute;
-our $VERSION = '1.100820';
+BEGIN {
+  $Hook::Modular::Plugin::Attribute::VERSION = '1.101010';
+}
 # ABSTRACT: Base class for plugins constructed with attributes
-use base qw(
+use parent qw(
   Hook::Modular::Plugin
   Attribute::Handlers
 );
@@ -49,7 +51,7 @@ Hook::Modular::Plugin::Attribute - Base class for plugins constructed with attri
 
 =head1 VERSION
 
-version 1.100820
+version 1.101010
 
 =head1 METHODS
 

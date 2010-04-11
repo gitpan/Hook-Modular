@@ -5,7 +5,7 @@ use FindBin '$Bin';
 use lib File::Spec->catdir($Bin, 'lib');
 use Hook::Modular::Test ':all';
 use Test::More tests => 1;
-use base 'Hook::Modular';
+use parent 'Hook::Modular';
 
 # Test that two plugins registering with the same hook get executed in the
 # order specified in the config.

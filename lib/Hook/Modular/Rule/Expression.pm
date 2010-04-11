@@ -3,9 +3,11 @@ use strict;
 use warnings;
 
 package Hook::Modular::Rule::Expression;
-our $VERSION = '1.100820';
+BEGIN {
+  $Hook::Modular::Rule::Expression::VERSION = '1.101010';
+}
 # ABSTRACT: Expression-based rule dispatcher
-use base 'Hook::Modular::Rule';
+use parent 'Hook::Modular::Rule';
 
 sub dispatch {
     my ($self, $args) = @_;
@@ -28,7 +30,7 @@ Hook::Modular::Rule::Expression - Expression-based rule dispatcher
 
 =head1 VERSION
 
-version 1.100820
+version 1.101010
 
 =head1 METHODS
 

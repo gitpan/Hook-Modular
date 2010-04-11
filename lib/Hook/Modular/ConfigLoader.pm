@@ -3,7 +3,9 @@ use strict;
 use warnings;
 
 package Hook::Modular::ConfigLoader;
-our $VERSION = '1.100820';
+BEGIN {
+  $Hook::Modular::ConfigLoader::VERSION = '1.101010';
+}
 # ABSTRACT: Configuration loader for Hook::Modular
 use Carp;
 use Hook::Modular::Walker;
@@ -84,7 +86,7 @@ Hook::Modular::ConfigLoader - Configuration loader for Hook::Modular
 
 =head1 VERSION
 
-version 1.100820
+version 1.101010
 
 =head1 METHODS
 

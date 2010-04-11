@@ -3,7 +3,9 @@ use strict;
 use warnings;
 
 package Hook::Modular::Test;
-our $VERSION = '1.100820';
+BEGIN {
+  $Hook::Modular::Test::VERSION = '1.101010';
+}
 # ABSTRACT: utility functions for testing Hook::Modular
 use File::Temp 'tempfile';
 use YAML qw/Load DumpFile/;
@@ -29,7 +31,7 @@ Hook::Modular::Test - utility functions for testing Hook::Modular
 
 =head1 VERSION
 
-version 1.100820
+version 1.101010
 
 =head1 SYNOPSIS
 
