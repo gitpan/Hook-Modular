@@ -4,7 +4,7 @@ use warnings;
 
 package Hook::Modular;
 BEGIN {
-  $Hook::Modular::VERSION = '1.101010';
+  $Hook::Modular::VERSION = '1.101050';
 }
 # ABSTRACT: Making pluggable applications easy
 use Encode ();
@@ -362,7 +362,7 @@ Hook::Modular - Making pluggable applications easy
 
 =head1 VERSION
 
-version 1.101010
+version 1.101050
 
 =head1 SYNOPSIS
 

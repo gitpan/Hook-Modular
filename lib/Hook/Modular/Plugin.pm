@@ -4,7 +4,7 @@ use warnings;
 
 package Hook::Modular::Plugin;
 BEGIN {
-  $Hook::Modular::Plugin::VERSION = '1.101010';
+  $Hook::Modular::Plugin::VERSION = '1.101050';
 }
 # ABSTRACT: Base class for plugins
 use File::Find::Rule ();    # don't import rule()
@@ -147,7 +147,7 @@ Hook::Modular::Plugin - Base class for plugins
 
 =head1 VERSION
 
-version 1.101010
+version 1.101050
 
 =head1 SYNOPSIS
 

@@ -4,7 +4,7 @@ use warnings;
 
 package Hook::Modular::Test;
 BEGIN {
-  $Hook::Modular::Test::VERSION = '1.101010';
+  $Hook::Modular::Test::VERSION = '1.101050';
 }
 # ABSTRACT: utility functions for testing Hook::Modular
 use File::Temp 'tempfile';
@@ -31,7 +31,7 @@ Hook::Modular::Test - utility functions for testing Hook::Modular
 
 =head1 VERSION
 
-version 1.101010
+version 1.101050
 
 =head1 SYNOPSIS
 

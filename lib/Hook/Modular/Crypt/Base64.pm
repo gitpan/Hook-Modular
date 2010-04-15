@@ -4,7 +4,7 @@ use warnings;
 
 package Hook::Modular::Crypt::Base64;
 BEGIN {
-  $Hook::Modular::Crypt::Base64::VERSION = '1.101010';
+  $Hook::Modular::Crypt::Base64::VERSION = '1.101050';
 }
 # ABSTRACT: Base64 crypt mechanism for passwords in workflows
 use MIME::Base64 ();
@@ -31,7 +31,7 @@ Hook::Modular::Crypt::Base64 - Base64 crypt mechanism for passwords in workflows
 
 =head1 VERSION
 
-version 1.101010
+version 1.101050
 
 =head1 METHODS
 

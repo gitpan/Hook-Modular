@@ -4,7 +4,7 @@ use warnings;
 
 package Hook::Modular::Rules;
 BEGIN {
-  $Hook::Modular::Rules::VERSION = '1.101010';
+  $Hook::Modular::Rules::VERSION = '1.101050';
 }
 # ABSTRACT: Workflow rules
 use Hook::Modular::Operator;
@@ -53,7 +53,7 @@ Hook::Modular::Rules - Workflow rules
 
 =head1 VERSION
 
-version 1.101010
+version 1.101050
 
 =head1 METHODS
 

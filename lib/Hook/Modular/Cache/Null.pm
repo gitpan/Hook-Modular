@@ -4,7 +4,7 @@ use warnings;
 
 package Hook::Modular::Cache::Null;
 BEGIN {
-  $Hook::Modular::Cache::Null::VERSION = '1.101010';
+  $Hook::Modular::Cache::Null::VERSION = '1.101050';
 }
 # ABSTRACT: Null cache
 
@@ -38,7 +38,7 @@ Hook::Modular::Cache::Null - Null cache
 
 =head1 VERSION
 
-version 1.101010
+version 1.101050
 
 =head1 DESCRIPTION
 

@@ -4,7 +4,7 @@ use warnings;
 
 package Hook::Modular::Operator;
 BEGIN {
-  $Hook::Modular::Operator::VERSION = '1.101010';
+  $Hook::Modular::Operator::VERSION = '1.101050';
 }
 # ABSTRACT: Boolean operators for plugins
 use List::Util qw(reduce);
@@ -42,7 +42,7 @@ Hook::Modular::Operator - Boolean operators for plugins
 
 =head1 VERSION
 
-version 1.101010
+version 1.101050
 
 =head1 METHODS
 

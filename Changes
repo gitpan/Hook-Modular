@@ -1,5 +1,7 @@
 Revision history for Perl extension Hook-Modular
 
+1.101050  2010-04-15 18:01:17 Europe/Vienna
+
 1.101010  2010-04-11 12:43:43 Europe/Vienna
     - use parent instead of use base
     - don't use Module::Pluggable::Fast anymore, just Module::Pluggable

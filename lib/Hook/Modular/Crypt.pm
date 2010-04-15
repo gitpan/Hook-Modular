@@ -4,7 +4,7 @@ use warnings;
 
 package Hook::Modular::Crypt;
 BEGIN {
-  $Hook::Modular::Crypt::VERSION = '1.101010';
+  $Hook::Modular::Crypt::VERSION = '1.101050';
 }
 # ABSTRACT: Crypt mechanism for passwords in workflows
 use Module::Pluggable
@@ -43,7 +43,7 @@ Hook::Modular::Crypt - Crypt mechanism for passwords in workflows
 
 =head1 VERSION
 
-version 1.101010
+version 1.101050
 
 =head1 METHODS
 

@@ -4,7 +4,7 @@ use warnings;
 
 package Hook::Modular::Walker;
 BEGIN {
-  $Hook::Modular::Walker::VERSION = '1.101010';
+  $Hook::Modular::Walker::VERSION = '1.101050';
 }
 # ABSTRACT: Methods that walk over the workflow
 use Carp;
@@ -93,7 +93,7 @@ Hook::Modular::Walker - Methods that walk over the workflow
 
 =head1 VERSION
 
-version 1.101010
+version 1.101050
 
 =head1 METHODS
 

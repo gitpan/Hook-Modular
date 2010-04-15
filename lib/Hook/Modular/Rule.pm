@@ -4,7 +4,7 @@ use warnings;
 
 package Hook::Modular::Rule;
 BEGIN {
-  $Hook::Modular::Rule::VERSION = '1.101010';
+  $Hook::Modular::Rule::VERSION = '1.101050';
 }
 # ABSTRACT: A Workflow rule
 use UNIVERSAL::require;
@@ -47,7 +47,7 @@ Hook::Modular::Rule - A Workflow rule
 
 =head1 VERSION
 
-version 1.101010
+version 1.101050
 
 =head1 METHODS
 

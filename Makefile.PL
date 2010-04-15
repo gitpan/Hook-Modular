@@ -26,7 +26,7 @@ my %WriteMakefileArgs = (
                                            },
                        'ABSTRACT' => 'Making pluggable applications easy',
                        'EXE_FILES' => [],
-                       'VERSION' => '1.101010',
+                       'VERSION' => '1.101050',
                        'PREREQ_PM' => {
                                         'Scalar::Util' => '0',
                                         'UNIVERSAL' => '0',

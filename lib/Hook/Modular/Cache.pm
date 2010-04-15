@@ -4,7 +4,7 @@ use warnings;
 
 package Hook::Modular::Cache;
 BEGIN {
-  $Hook::Modular::Cache::VERSION = '1.101010';
+  $Hook::Modular::Cache::VERSION = '1.101050';
 }
 # ABSTRACT: Cache for Hook::Modular
 use File::Path;
@@ -104,7 +104,7 @@ Hook::Modular::Cache - Cache for Hook::Modular
 
 =head1 VERSION
 
-version 1.101010
+version 1.101050
 
 =head1 METHODS
 

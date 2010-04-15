@@ -2,7 +2,7 @@ NAME
     Hook::Modular - Making pluggable applications easy
 
 VERSION
-    version 1.101010
+    version 1.101050
 
 SYNOPSIS
     In "some_config.yaml"

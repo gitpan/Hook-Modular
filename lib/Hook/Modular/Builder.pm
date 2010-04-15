@@ -4,7 +4,7 @@ use warnings;
 
 package Hook::Modular::Builder;
 BEGIN {
-  $Hook::Modular::Builder::VERSION = '1.101010';
+  $Hook::Modular::Builder::VERSION = '1.101050';
 }
 # ABSTRACT: Domain-specific language for building configurations
 use Exporter qw(import);
@@ -89,7 +89,7 @@ Hook::Modular::Builder - Domain-specific language for building configurations
 
 =head1 VERSION
 
-version 1.101010
+version 1.101050
 
 =head1 SYNOPSIS
 
